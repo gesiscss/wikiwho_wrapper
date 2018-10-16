@@ -16,4 +16,4 @@ session = requests.Session()
 #session.params['api_key'] = WIKIWHO_API_KEY
 
 
-from .wikiwhoapi import WikiWhoAPI
+from .api import WikiWhoAPI
