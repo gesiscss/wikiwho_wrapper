@@ -16,7 +16,7 @@ class WikiWhoAPI:
         """
         self.id = id
         self.base = f"https://{domain}/{lng}/api/{version}"
-        self.attempts = 2
+        self.attempts = attempts
 
     def all_content(self,
                     article: Union[int, str],
