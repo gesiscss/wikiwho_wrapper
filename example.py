@@ -1,5 +1,8 @@
 from wikiwho_wrapper import WikiWhoAPI
 
 api = WikiWhoAPI()
-response = api.all_content(6187)
+
+# nice example: bioglass
+response = api.all_content("Cologne")
+import ipdb; ipdb.set_trace()  # breakpoint 12fb971f //
 
