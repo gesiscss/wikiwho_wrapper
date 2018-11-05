@@ -52,7 +52,7 @@ class WikiWhoAPI:
             url = f"{self.base}/all_content/{article}/?{params}"
 
         # return the dictionary
-        return self.request(url)
+        return self.request(url.lower())
 
     def last_rev_content(self,
                          article: Union[int, str],
