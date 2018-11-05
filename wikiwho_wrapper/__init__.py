@@ -22,3 +22,4 @@ if WIKIWHO_API_USERNAME and WIKIWHO_API_PASSWORD:
 
 
 from .api import WikiWhoAPI
+from .queries import *
