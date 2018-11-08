@@ -5,18 +5,21 @@ from typing import Union
 
 from .api import WikiWhoAPI
 
+
 class APIQuerier:
 
     def __init__(self, api):
         self.api = api
 
-    def all_content(self, article):
+    def all_content(self,
+                    article: Union[int, str],
+                    o_rev_id: bool=True,
+                    editor: bool=True,
+                    token_id: bool=True,
+                    out: bool=True,
+                    _in: bool=True) -> pd.DataFrame:
 
-        # use the wrapper to query the api
-        if isinstance(article, int):
-            response = self.api.all_content(article)
-        else:
-            response = self.api.all_content(article)
+        response = self.api.all_content(article)
 
         # rows = []
 
@@ -58,14 +61,15 @@ class APIQuerier:
 
         return df
 
+    def last_rev_content(self,
+                         article: Union[int, str],
+                         o_rev_id: bool=True,
+                         editor: bool=True,
+                         token_id: bool=True,
+                         out: bool=True,
+                         _in: bool=True) -> pd.DataFrame:
 
-    def last_rev_content(self, article: Union[int, str]):
-
-        # use the wrapper to query the api
-        if isinstance(article, int):
-            response = self.api.last_rev_content(article)
-        else:
-            response = self.api.last_rev_content(article)
+        response = self.api.last_rev_content(article)
 
         rows = ((response["article_title"],
                  response["page_id"],
@@ -93,8 +97,13 @@ class APIQuerier:
 
         return df
 
-
-    def specific_rev_content_by_rev_id(self, rev_id):
+    def specific_rev_content_by_rev_id(self,
+                                       rev_id: int,
+                                       o_rev_id: bool=True,
+                                       editor: bool=True,
+                                       token_id: bool=True,
+                                       out: bool=True,
+                                       _in: bool=True) -> pd.DataFrame:
 
         # use the wrapper to query the api
         response = self.api.specific_rev_content_by_rev_id(rev_id)
@@ -125,11 +134,18 @@ class APIQuerier:
 
         return df
 
-
-    def specific_rev_content_by_article_title(self, article_title, rev_id):
+    def specific_rev_content_by_article_title(self,
+                                              article: str,
+                                              rev_id: int,
+                                              o_rev_id: bool=True,
+                                              editor: bool=True,
+                                              token_id: bool=True,
+                                              out: bool=True,
+                                              _in: bool=True) -> pd.DataFrame:
 
         # use the wrapper to query the api
-        response = self.api.specific_rev_content_by_article_title(article_title, rev_id)
+        response = self.api.specific_rev_content_by_article_title(
+            article, rev_id)
 
         rows = ((response["article_title"],
                  response["page_id"],
@@ -157,14 +173,19 @@ class APIQuerier:
 
         return df
 
-
-    def range_rev_content_by_article_title(self,article_title,
-                                           start_rev,
-                                           end_rev):
+    def range_rev_content_by_article_title(self,
+                                           article: str,
+                                           start_rev_id: int,
+                                           end_rev_id: int,
+                                           o_rev_id: bool=True,
+                                           editor: bool=True,
+                                           token_id: bool=True,
+                                           out: bool=True,
+                                           _in: bool=True) -> pd.DataFrame:
 
         # use the wrapper to query the api
         response = self.api.range_rev_content_by_article_title(
-            article_title, start_rev, end_rev)
+            article_title, start_rev_id, end_rev_id)
 
         rows = ((response["article_title"],
                  response["page_id"],
@@ -192,14 +213,12 @@ class APIQuerier:
 
         return df
 
+    def rev_ids_of_article(self,
+                           article: Union[int, str],
+                           editor: bool=True,
+                           timestamp: bool=True) -> pd.DataFrame:
 
-    def rev_ids_of_article(self, article: Union[int, str]) -> pd.DataFrame:
-
-        # use the wrapper to query the api
-        if isinstance(article, int):
-            response = self.api.rev_ids_of_article(article)
-        else:
-            response = self.api.rev_ids_of_article(article)
+        response = self.api.rev_ids_of_article(article)
 
         rows = ((response["article_title"],
                  response["page_id"],
@@ -209,10 +228,6 @@ class APIQuerier:
                  )
 
                 for rev in response["revisions"]
-                # for rev_id, rev_dict in dummy_rev.items()
-                # for token_dict in rev_dict['tokens']
-                # for i, (_in, _out) in enumerate(zip(itertools.chain((-1,), token_dict["in"]),
-                # itertools.chain(token_dict["out"], (-1,))))
                 )
 
         df = pd.DataFrame(data=rows, columns=[
