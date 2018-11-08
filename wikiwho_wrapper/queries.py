@@ -158,7 +158,7 @@ class APIQuerier:
         return df
 
 
-    def range_rev_content_by_article_title(self, article_title,
+    def range_rev_content_by_article_title(self,article_title,
                                            start_rev,
                                            end_rev):
 
@@ -193,7 +193,7 @@ class APIQuerier:
         return df
 
 
-    def rev_ids_of_article(self, article: Union[int, str]):
+    def rev_ids_of_article(self, article: Union[int, str]) -> pd.DataFrame:
 
         # use the wrapper to query the api
         if isinstance(article, int):

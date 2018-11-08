@@ -6,7 +6,7 @@ from . import session
 
 class WikiWhoAPI:
 
-    def __init__(self, lng: str="en", protocol="https", domain="api.wikiwho.net", version="v1.0.0-beta", attempts=2):
+    def __init__(self, lng: str="en", protocol: str="https", domain: str="api.wikiwho.net", version: str="v1.0.0-beta", attempts: int=2):
         """Constructor of the WikiWhoAPI
 
         Args:
