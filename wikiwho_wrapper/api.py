@@ -6,19 +6,18 @@ from . import session
 
 class WikiWhoAPI:
 
-    # def __init__(self, lng: str="en", domain="10.6.13.139", version="v1.0.0", attempts=2):
-    def __init__(self, lng: str="en", domain="api.wikiwho.net", version="v1.0.0-beta", attempts=2):
+    def __init__(self, lng: str="en", protocol="https", domain="api.wikiwho.net", version="v1.0.0-beta", attempts=2):
         """Constructor of the WikiWhoAPI
 
         Args:
             lng (str, optional): the language that needs to be query
+            protocol (str, optional): the protocol of the url
             domain (str, optional): the domain that hosts the api
             version (str, optional): the version of the api
             attempts (int, optional): the number of attempts before giving up trying to connect
         """
         self.id = id
-        # self.base = f"http://{domain}/{lng}/api/{version}"
-        self.base = f"https://{domain}/{lng}/api/{version}"
+        self.base = f"{protocol}://{domain}/{lng}/api/{version}"
         self.attempts = attempts
 
     def all_content(self,
