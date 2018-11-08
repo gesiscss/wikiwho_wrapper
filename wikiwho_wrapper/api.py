@@ -6,6 +6,7 @@ from . import session
 
 class WikiWhoAPI:
 
+    # def __init__(self, lng: str="en", domain="10.6.13.139", version="v1.0.0", attempts=2):
     def __init__(self, lng: str="en", domain="api.wikiwho.net", version="v1.0.0-beta", attempts=2):
         """Constructor of the WikiWhoAPI
 
@@ -16,6 +17,7 @@ class WikiWhoAPI:
             attempts (int, optional): the number of attempts before giving up trying to connect
         """
         self.id = id
+        # self.base = f"http://{domain}/{lng}/api/{version}"
         self.base = f"https://{domain}/{lng}/api/{version}"
         self.attempts = attempts
 
@@ -86,7 +88,7 @@ class WikiWhoAPI:
             url = f"{self.base}/rev_content/{article}/?{params}"
 
         # return the dictionary
-        return self.request(url)
+        return self.request(url.lower())
 
     def specific_rev_content_by_rev_id(self,
                                        rev_id: int,
@@ -116,7 +118,7 @@ class WikiWhoAPI:
         url = f"{self.base}/rev_content/rev_id/{rev_id}/?{params}"
 
         # return the dictionary
-        return self.request(url)
+        return self.request(url.lower())
 
     def specific_rev_content_by_article_title(self,
                                               article: str,
@@ -148,7 +150,7 @@ class WikiWhoAPI:
         url = f"{self.base}/rev_content/{article}/{rev_id}/?{params}"
 
         # return the dictionary
-        return self.request(url)
+        return self.request(url.lower())
 
     def range_rev_content_by_article_title(self,
                                            article: str,
@@ -182,7 +184,7 @@ class WikiWhoAPI:
         url = f"{self.base}/rev_content/{article}/{start_rev_id}/{end_rev_id}/?{params}"
 
         # return the dictionary
-        return self.request(url)
+        return self.request(url.lower())
 
     def rev_ids_of_article(self,
                            article: Union[int, str],
@@ -210,7 +212,7 @@ class WikiWhoAPI:
             url = f"{self.base}/rev_ids/{article}/?{params}"
 
         # return the dictionary
-        return self.request(url)
+        return self.request(url.lower())
 
     def request(self, url: str, tries=2) -> dict:
         """Do the request
