@@ -267,7 +267,7 @@ class APIQuerier:
         """
 
         response = self.api.range_rev_content_by_article_title(
-            article_title, start_rev_id, end_rev_id)
+            article, start_rev_id, end_rev_id)
 
         rows = ((response["article_title"],
                  response["page_id"],
