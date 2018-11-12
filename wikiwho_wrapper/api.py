@@ -12,7 +12,6 @@ class WikiWhoAPI:
     Attributes:
         attempts (int): Number of attempts to be done to the server
         base (url): Base request url
-        id (int): Description
     """
     
     def __init__(self, lng: str="en", protocol: str="https", domain: str="api.wikiwho.net", version: str="v1.0.0-beta", attempts: int=2):
@@ -25,7 +24,7 @@ class WikiWhoAPI:
             version (str, optional): the version of the api
             attempts (int, optional): the number of attempts before giving up trying to connect
         """
-        self.id = id
+
         self.base = f"{protocol}://{domain}/{lng}/api/{version}"
         self.attempts = attempts
 
