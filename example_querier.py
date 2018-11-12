@@ -15,9 +15,9 @@ last_revision_by_given_article_title_df = querier.last_rev_content(article="biog
 last_revision_by_given_page_id_df = querier.last_rev_content(2161298)
 
 specific_revision_by_given_article_title_df = querier.specific_rev_content_by_rev_id(rev_id=189370281)
-specific_revision_by_given_revision_id_df = querier.specific_rev_content_by_article_title(article_title="bioglass", rev_id=189370281)
+specific_revision_by_given_revision_id_df = querier.specific_rev_content_by_article_title(article="bioglass", rev_id=189370281)
 
-range_revisions_by_given_start_to_end_revision_ids_df = querier.range_rev_content_by_article_title(article_title="bioglass",  start_rev=18064039,  end_rev=207995408)
+range_revisions_by_given_start_to_end_revision_ids_df = querier.range_rev_content_by_article_title(article="bioglass",  start_rev_id=18064039,  end_rev_id=207995408)
 
 revision_ids_of_article_by_given_article_title_df = querier.rev_ids_of_article(article="bioglass")
 revision_ids_of_article_by_given_page_id_df = querier.rev_ids_of_article(2161298)
