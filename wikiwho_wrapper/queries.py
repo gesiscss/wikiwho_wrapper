@@ -1,3 +1,5 @@
+"""Summary
+"""
 import pandas as pd
 import itertools
 from typing import Union
@@ -8,7 +10,18 @@ from .api import WikiWhoAPI
 
 class APIQuerier:
 
+    """Qurey methods for correspondence of the WikiWhoAPI methods 
+    
+    Attributes:
+        api (TYPE): Description
+    """
+    
     def __init__(self, api):
+        """Constructor of the APIQuerier
+        
+        Args:
+            api (TYPE): the WikiWhoAPI
+        """
         self.api = api
 
     def all_content(self,
@@ -19,6 +32,21 @@ class APIQuerier:
                     out: bool=True,
                     _in: bool=True) -> pd.DataFrame:
 
+        """Get all content on an article, i.e. Outputs all tokens that have ever existed 
+        in a given article, including their change history for each.
+        
+        Args:
+            article (Union[int, str]): page id (int) or title (str) of the page.
+            o_rev_id (bool, optional): Origin revision ID per token
+            editor (bool, optional): Editor ID/Name per token
+            token_id (bool, optional): Token ID per token
+            out (bool, optional): Outbound revision IDs per token
+            _in (bool, optional): Outbound revision IDs per token
+        
+        Returns:
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 2 - All content in 
+                https://api.wikiwho.net/en/api/v1.0.0-beta/
+        """
         response = self.api.all_content(article)
 
         # rows = []
@@ -68,7 +96,20 @@ class APIQuerier:
                          token_id: bool=True,
                          out: bool=True,
                          _in: bool=True) -> pd.DataFrame:
-
+        """Get the content of the most recent (last) revision of the given article, as available on Wikipedia.
+        
+        Args:
+            article (Union[int, str]): page id (int) or title (str) of the page.
+            o_rev_id (bool, optional): Origin revision ID per token
+            editor (bool, optional): Editor ID/Name per token
+            token_id (bool, optional): Token ID per token
+            out (bool, optional): Outbound revision IDs per token
+            _in (bool, optional): Outbound revision IDs per token
+        
+        Returns:
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision for GET /rev_content/{article_title}/ and GET /rev_content/page_id/{page_id}/ in 
+                https://api.wikiwho.net/en/api/v1.0.0-beta/
+        """
         response = self.api.last_rev_content(article)
 
         rows = ((response["article_title"],
@@ -104,8 +145,20 @@ class APIQuerier:
                                        token_id: bool=True,
                                        out: bool=True,
                                        _in: bool=True) -> pd.DataFrame:
-
-        # use the wrapper to query the api
+        """Get the content of the given revision id.
+        
+        Args:
+            rev_id (int): Revision ID to get content for.
+            o_rev_id (bool, optional): Origin revision ID per token
+            editor (bool, optional): Editor ID/Name per token
+            token_id (bool, optional): Token ID per token
+            out (bool, optional): Outbound revision IDs per token
+            _in (bool, optional): Outbound revision IDs per token
+        
+        Returns:
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/rev_id/{rev_id}/ in 
+                https://api.wikiwho.net/en/api/v1.0.0-beta/
+        """
         response = self.api.specific_rev_content_by_rev_id(rev_id)
 
         rows = ((response["article_title"],
@@ -142,8 +195,22 @@ class APIQuerier:
                                               token_id: bool=True,
                                               out: bool=True,
                                               _in: bool=True) -> pd.DataFrame:
+        """Get the content of the given revision of the given article title.
+        
+        Args:
+            article (str): Title (str) of the page.
+            rev_id (int): Revision ID to get content for.
+            o_rev_id (bool, optional): Origin revision ID per token
+            editor (bool, optional): Editor ID/Name per token
+            token_id (bool, optional): Token ID per token
+            out (bool, optional): Outbound revision IDs per token
+            _in (bool, optional): Outbound revision IDs per token
+        
+        Returns:
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{rev_id}/ in 
+                https://api.wikiwho.net/en/api/v1.0.0-beta/
+        """
 
-        # use the wrapper to query the api
         response = self.api.specific_rev_content_by_article_title(
             article, rev_id)
 
@@ -182,8 +249,23 @@ class APIQuerier:
                                            token_id: bool=True,
                                            out: bool=True,
                                            _in: bool=True) -> pd.DataFrame:
+        """Get the content of a range of revisions of an article, by given article title, start revison id and end revison id.
+        
+        Args:
+            article (str): Title (str) of the page.
+            start_rev_id (int): Start revision ID
+            end_rev_id (int): End revision ID
+            o_rev_id (bool, optional): Origin revision ID per token
+            editor (bool, optional): Editor ID/Name per token
+            token_id (bool, optional): Token ID per token
+            out (bool, optional): Outbound revision IDs per token
+            _in (bool, optional): Outbound revision IDs per token
+        
+        Returns:
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{start_rev_id}/{end_rev_id}/ in 
+                https://api.wikiwho.net/en/api/v1.0.0-beta/
+        """
 
-        # use the wrapper to query the api
         response = self.api.range_rev_content_by_article_title(
             article_title, start_rev_id, end_rev_id)
 
@@ -217,7 +299,17 @@ class APIQuerier:
                            article: Union[int, str],
                            editor: bool=True,
                            timestamp: bool=True) -> pd.DataFrame:
-
+        """Get revision IDs of an article by given article title or page id.
+        
+        Args:
+            article (Union[int, str]): page id (int) or title (str) of the page.
+            editor (bool, optional): Editor ID/Name per token
+            timestamp (bool, optional): timestamp of each revision
+        
+        Returns:
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision for GET /rev_ids/{article_title}/ and GET /rev_ids/page_id/{page_id}/ in 
+                https://api.wikiwho.net/en/api/v1.0.0-beta/
+        """
         response = self.api.rev_ids_of_article(article)
 
         rows = ((response["article_title"],

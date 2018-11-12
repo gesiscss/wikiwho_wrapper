@@ -8,7 +8,6 @@ api = WikiWhoAPI()
 # response = api.rev_ids_of_article(2161298)
 querier = APIQuerier(api)
 
-
 all_content_by_given_article_title_df = querier.all_content(article="bioglass")
 all_content_by_given_page_id_df = querier.all_content(2161298)
 
@@ -22,7 +21,6 @@ range_revisions_by_given_start_to_end_revision_ids_df = querier.range_rev_conten
 
 revision_ids_of_article_by_given_article_title_df = querier.rev_ids_of_article(article="bioglass")
 revision_ids_of_article_by_given_page_id_df = querier.rev_ids_of_article(2161298)
-
 
 import ipdb
 ipdb.set_trace()
