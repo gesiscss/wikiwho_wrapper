@@ -1,3 +1,5 @@
+name = "wikiwho_wrapper"
+
 import os
 import requests
 
