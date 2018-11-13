@@ -5,6 +5,10 @@ from typing import Union
 from . import session
 
 
+import os
+import requests
+
+
 class WikiWhoAPI:
 
     """The APIs provide provenance and change information about the tokens a Wikipedia article consists of, for several languages. Apart from the source language edition they draw from, their specifications and usage are identical
@@ -15,6 +19,9 @@ class WikiWhoAPI:
     """
 
     def __init__(self,
+                 wikiwho_api_username: str=None,
+                 wikiwho_api_password: str=None,
+                 wikiwho_api_key: str=None,
                  lng: str="en",
                  protocol: str="https",
                  domain: str="api.wikiwho.net",
@@ -23,12 +30,23 @@ class WikiWhoAPI:
         """Constructor of the WikiWhoAPI
 
         Args:
+            wikiwho_api_username (str, optional): WikiWho API username
+            wikiwho_api_password (str, optional): WikiWho API password
+            wikiwho_api_key (str, optional): WikiWho API key
             lng (str, optional): the language that needs to be query
             protocol (str, optional): the protocol of the url
             domain (str, optional): the domain that hosts the api
             version (str, optional): the version of the api
             attempts (int, optional): the number of attempts before giving up trying to connect
         """
+
+        self.session = requests.Session()
+        if wikiwho_api_username and wikiwho_api_password:
+            self.session.auth = (wikiwho_api_username, wikiwho_api_password)
+
+        if wikiwho_api_key:
+            self.session.params = {}
+            self.session.params['api_key'] = WIKIWHO_API_KEY
 
         self.base = f"{protocol}://{domain}/{lng}/api/{version}"
         self.attempts = attempts
@@ -242,7 +260,7 @@ class WikiWhoAPI:
 
         for attempt in range(0, self.attempts + 1):
             try:
-                response = session.get(url)
+                response = self.session.get(url)
                 response.raise_for_status()
                 return response.json()
             except Exception as exc:
