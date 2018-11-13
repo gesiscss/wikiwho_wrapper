@@ -8,15 +8,20 @@ from . import session
 class WikiWhoAPI:
 
     """The APIs provide provenance and change information about the tokens a Wikipedia article consists of, for several languages. Apart from the source language edition they draw from, their specifications and usage are identical
-    
+
     Attributes:
         attempts (int): Number of attempts to be done to the server
         base (url): Base request url
     """
-    
-    def __init__(self, lng: str="en", protocol: str="https", domain: str="api.wikiwho.net", version: str="v1.0.0-beta", attempts: int=2):
+
+    def __init__(self,
+                 lng: str="en",
+                 protocol: str="https",
+                 domain: str="api.wikiwho.net",
+                 version: str="v1.0.0-beta",
+                 attempts: int=2):
         """Constructor of the WikiWhoAPI
-        
+
         Args:
             lng (str, optional): the language that needs to be query
             protocol (str, optional): the protocol of the url
@@ -37,7 +42,7 @@ class WikiWhoAPI:
                     _in: bool=True):
         """Get all content on an article, i.e. Outputs all tokens that have ever existed 
         in a given article, including their change history for each.
-        
+
         Args:
             article (Union[int, str]): page id (int) or title (str) of the page.
             o_rev_id (bool, optional): Origin revision ID per token
@@ -45,7 +50,7 @@ class WikiWhoAPI:
             token_id (bool, optional): Token ID per token
             out (bool, optional): Outbound revision IDs per token
             _in (bool, optional): Outbound revision IDs per token
-        
+
         Returns:
             dict: result of the api query as documented in 2 - All content in 
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
@@ -71,7 +76,7 @@ class WikiWhoAPI:
                          out: bool=True,
                          _in: bool=True):
         """Get the content of the most recent (last) revision of the given article, as available on Wikipedia.
-        
+
         Args:
             article (Union[int, str]): page id (int) or title (str) of the page.
             o_rev_id (bool, optional): Origin revision ID per token
@@ -79,7 +84,7 @@ class WikiWhoAPI:
             token_id (bool, optional): Token ID per token
             out (bool, optional): Outbound revision IDs per token
             _in (bool, optional): Outbound revision IDs per token
-        
+
         Returns:
             dict: result of the api query as documented in 1 - Content per revision for GET /rev_content/{article_title}/ and GET /rev_content/page_id/{page_id}/ in 
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
@@ -105,7 +110,7 @@ class WikiWhoAPI:
                                        out: bool=True,
                                        _in: bool=True):
         """Get the content of the given revision id.
-        
+
         Args:
             rev_id (int): Revision ID to get content for.
             o_rev_id (bool, optional): Origin revision ID per token
@@ -113,7 +118,7 @@ class WikiWhoAPI:
             token_id (bool, optional): Token ID per token
             out (bool, optional): Outbound revision IDs per token
             _in (bool, optional): Outbound revision IDs per token
-        
+
         Returns:
             dict: result of the api query as documented in 1 - Content per revision  for GET /rev_content/rev_id/{rev_id}/ in 
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
@@ -136,7 +141,7 @@ class WikiWhoAPI:
                                               out: bool=True,
                                               _in: bool=True):
         """Get the content of the given revision of the given article title.
-        
+
         Args:
             article (str): Title (str) of the page.
             rev_id (int): Revision ID to get content for.
@@ -145,7 +150,7 @@ class WikiWhoAPI:
             token_id (bool, optional): Token ID per token
             out (bool, optional): Outbound revision IDs per token
             _in (bool, optional): Outbound revision IDs per token
-        
+
         Returns:
             dict: result of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{rev_id}/ in 
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
@@ -169,7 +174,7 @@ class WikiWhoAPI:
                                            out: bool=True,
                                            _in: bool=True):
         """Get the content of a range of revisions of an article, by given article title, start revison id and end revison id.
-        
+
         Args:
             article (str): Title (str) of the page.
             start_rev_id (int): Start revision ID
@@ -179,7 +184,7 @@ class WikiWhoAPI:
             token_id (bool, optional): Token ID per token
             out (bool, optional): Outbound revision IDs per token
             _in (bool, optional): Outbound revision IDs per token
-        
+
         Returns:
             dict: result of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{start_rev_id}/{end_rev_id}/ in 
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
@@ -198,12 +203,12 @@ class WikiWhoAPI:
                            editor: bool=True,
                            timestamp: bool=True):
         """Get revision IDs of an article by given article title or page id.
-        
+
         Args:
             article (Union[int, str]): page id (int) or title (str) of the page.
             editor (bool, optional): Editor ID/Name per token
             timestamp (bool, optional): timestamp of each revision
-        
+
         Returns:
             dict: result of the api query as documented in 1 - Content per revision for GET /rev_ids/{article_title}/ and GET /rev_ids/page_id/{page_id}/ in 
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
@@ -223,14 +228,14 @@ class WikiWhoAPI:
 
     def request(self, url: str, tries=2) -> dict:
         """Do the request
-        
+
         Args:
             url (str): The request url
             tries (int, optional): the number of attemts to be done in the server
-        
+
         Returns:
             dict: The results of the request
-        
+
         Raises:
             exc: If a connection has failed
         """
