@@ -11,7 +11,7 @@ Requires python >= 3.6
 
 # How to use it?
 
-First, you need and instance of the WikiWhoAPI. 
+First, you need an instance of the WikiWhoAPI. 
 
     from wikiwho_wrapper import WikiWhoAPI
     api = WikiWhoAPI()
