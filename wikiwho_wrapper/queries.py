@@ -228,7 +228,7 @@ class APIQuerier:
                  )
 
                 for dummy_rev in response["revisions"]
-                for rev_id, rev_dict in dummy_rev.items()
+                for _, rev_dict in dummy_rev.items()
                 for token_dict in rev_dict['tokens']
                 # for i, (_in, _out) in enumerate(zip(itertools.chain((-1,), token_dict["in"]),
                 # itertools.chain(token_dict["out"], (-1,))))

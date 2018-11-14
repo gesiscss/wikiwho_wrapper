@@ -1,4 +1,4 @@
 pytest
 ipdb
 jupyter
-
+nbstripout
