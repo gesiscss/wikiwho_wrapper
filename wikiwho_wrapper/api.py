@@ -2,7 +2,7 @@
 """
 from typing import Union
 
-from . import session
+from requests import session
 
 
 import os
