@@ -11,7 +11,11 @@ Requires python >= 3.6
 
 # How to use it?
 
+<<<<<<< HEAD
 First, you need and instance of the WikiWhoAPI. 
+=======
+First, you need an instance of the WikiWhoAPI. 
+>>>>>>> 89a328ea0406dd4e300ef7dbff00962d5249501b
 
     from wikiwho_wrapper import WikiWhoAPI
     api = WikiWhoAPI()
@@ -42,4 +46,8 @@ There are jupyter notebooks in the `tutorial` folder of the repository that serv
 4. Go to the `tutorial` directory, and follow the examples
 
 
+<<<<<<< HEAD
 ***Note that all the methods, and classes can receive parameters. All the parameters of the API are currently supported, for now you can check them directly in the code***
+=======
+***Note that all the methods, and classes can receive parameters. All the parameters of the API are currently supported, for now you can check them directly in the code***
+>>>>>>> 89a328ea0406dd4e300ef7dbff00962d5249501b
