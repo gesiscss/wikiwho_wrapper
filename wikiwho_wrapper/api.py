@@ -46,6 +46,7 @@ class WikiWhoAPI:
             self.session.params['api_key'] = WIKIWHO_API_KEY
 
         self.base = f"{protocol}://{domain}/{lng}/api/{version}"
+        self.base_editor = f"{protocol}://{domain}/{lng}/api_editor/{version}"
         self.attempts = attempts
 
     def all_content(self,
@@ -237,6 +238,43 @@ class WikiWhoAPI:
             url = f"{self.base}/rev_ids/page_id/{article}/?{params}"
         else:
             url = f"{self.base}/rev_ids/{article}/?{params}"
+
+        # return the dictionary
+        return self.request(url.lower())
+
+    def editor_content(self,
+                       page_id: int=None,
+                       editor_id: int=None,
+                       start: str=None,
+                       end: str=None):
+        """Get monthly editons for given editor id.
+
+        Args:
+            editor_id (int): editor id (int).
+            page_id (int): page id (int).
+            start (bool, optional): Origin revision ID per token
+            end (bool, optional): Editor ID/Name per token
+
+        Returns:
+            dict: result of the api query as documented in /editor/{editor_id}/ in 
+                https://www.wikiwho.net/en/api_editor/v1.0.0-beta/
+        """
+
+        # flatten the parameters
+        params = ''
+        if start and end:
+            params = f'start={start}&end={end}'
+        elif start:
+            params = f'start={start}'
+        elif end:
+            params = f'end={end}'
+
+        if page_id and editor_id:
+            url = f"{self.base_editor}/page/editor/{page_id}/{editor_id}/?{params}"
+        elif editor_id:
+            url = f"{self.base_editor}/editor/{editor_id}/?{params}"
+        elif page_id:
+            url = f"{self.base_editor}/page/{page_id}/?{params}"
 
         # return the dictionary
         return self.request(url.lower())
