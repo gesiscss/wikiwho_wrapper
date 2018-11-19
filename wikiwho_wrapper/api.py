@@ -13,6 +13,8 @@ class WikiWhoAPI:
     Attributes:
         attempts (int): Number of attempts to be done to the server
         base (url): Base request url
+        base_editor (TYPE): Description
+        session (TYPE): Description
     """
 
     def __init__(self,
@@ -247,13 +249,13 @@ class WikiWhoAPI:
                        editor_id: int=None,
                        start: str=None,
                        end: str=None):
-        """Get monthly editons for given editor id.
+        """Get monthly editons for given page id or editor id or both.
 
         Args:
-            editor_id (int): editor id (int).
-            page_id (int): page id (int).
-            start (bool, optional): Origin revision ID per token
-            end (bool, optional): Editor ID/Name per token
+            page_id (int, optional): page id (int).
+            editor_id (int, optional): editor id (int).
+            start (str, optional): Origin revision ID per token
+            end (str, optional): Editor ID/Name per token
 
         Returns:
             dict: result of the api query as documented in /editor/{editor_id}/ in 
@@ -275,6 +277,43 @@ class WikiWhoAPI:
             url = f"{self.base_editor}/editor/{editor_id}/?{params}"
         elif page_id:
             url = f"{self.base_editor}/page/{page_id}/?{params}"
+
+        # return the dictionary
+        return self.request(url.lower())
+
+    def editor_content_as_table(self,
+                                page_id: int=None,
+                                editor_id: int=None,
+                                start: str=None,
+                                end: str=None):
+        """Get monthly editons in tabular format for given page id or editor id or both.
+
+        Args:
+            page_id (int, optional): page id (int).
+            editor_id (int, optional): editor id (int).
+            start (str, optional): Origin revision ID per token
+            end (str, optional): Editor ID/Name per token
+
+        Returns:
+            dict: result of the api query as documented in /editor/{editor_id}/ in 
+                https://www.wikiwho.net/en/api_editor/v1.0.0-beta/
+        """
+
+        # flatten the parameters
+        params = ''
+        if start and end:
+            params = f'start={start}&end={end}'
+        elif start:
+            params = f'start={start}'
+        elif end:
+            params = f'end={end}'
+
+        if page_id and editor_id:
+            url = f"{self.base_editor}/as_table/page/editor/{page_id}/{editor_id}/?{params}"
+        elif editor_id:
+            url = f"{self.base_editor}/as_table/editor/{editor_id}/?{params}"
+        elif page_id:
+            url = f"{self.base_editor}/as_table/page/{page_id}/?{params}"
 
         # return the dictionary
         return self.request(url.lower())

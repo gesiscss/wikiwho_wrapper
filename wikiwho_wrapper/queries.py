@@ -346,9 +346,6 @@ class APIQuerier:
         """
         response = self.api.editor_content(page_id, editor_id, start, end)
 
-        # import ipdb
-        # ipdb.set_trace()
-
         rows = ((element['year_month'],
                  element["page_id"],
                  element["editor_id"],
@@ -373,5 +370,30 @@ class APIQuerier:
             'year_month', 'page_id', 'editor_id', 'adds', 'adds_surv_48h', 'adds_persistent', 'adds_stopword_count', 'dels', 'dels_surv_48h', 'dels_persistent',
             'dels_stopword_count', 'reins', 'reins_surv_48h', 'reins_persistent', 'reins_stopword_count'
         ])
+
+        return df
+
+    def editor_content_as_table(self,
+                                page_id: int=None,
+                                editor_id: int=None,
+                                start: str=None,
+                                end: str=None) -> pd.DataFrame:
+        """Get monthly editons in tabular format for given page id or editor id or both.
+
+        Args:
+            page_id (int, optional): page id (int).   
+            editor_id (int, optional): editor id (int).
+            start (str, optional): Origin revision ID per token
+            end (str, optional): Editor ID/Name per token
+
+        Returns:
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in /editor/{editor_id}/ in
+                https://www.wikiwho.net/en/api_editor/v1.0.0-beta/
+        """
+        response = self.api.editor_content_as_table(
+            page_id, editor_id, start, end)
+
+        df = pd.DataFrame(data=response['editions_data'], columns=response[
+                          'editions_columns'])
 
         return df
