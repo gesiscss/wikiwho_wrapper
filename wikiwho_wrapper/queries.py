@@ -10,7 +10,7 @@ from .api import WikiWhoAPI
 
 class APIQuerier:
 
-    """Qurey methods for correspondence of the WikiWhoAPI methods 
+    """Qurey methods for correspondence of the WikiWhoAPI methods
 
     Attributes:
         api (TYPE): Description
@@ -31,7 +31,7 @@ class APIQuerier:
                     token_id: bool=True,
                     out: bool=True,
                     _in: bool=True) -> pd.DataFrame:
-        """Get all content on an article, i.e. Outputs all tokens that have ever existed 
+        """Get all content on an article, i.e. Outputs all tokens that have ever existed
         in a given article, including their change history for each.
 
         Args:
@@ -43,7 +43,7 @@ class APIQuerier:
             _in (bool, optional): Outbound revision IDs per token
 
         Returns:
-            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 2 - All content in 
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 2 - All content in
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
         response = self.api.all_content(article)
@@ -106,7 +106,7 @@ class APIQuerier:
             _in (bool, optional): Outbound revision IDs per token
 
         Returns:
-            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision for GET /rev_content/{article_title}/ and GET /rev_content/page_id/{page_id}/ in 
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision for GET /rev_content/{article_title}/ and GET /rev_content/page_id/{page_id}/ in
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
         response = self.api.last_rev_content(article)
@@ -155,7 +155,7 @@ class APIQuerier:
             _in (bool, optional): Outbound revision IDs per token
 
         Returns:
-            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/rev_id/{rev_id}/ in 
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/rev_id/{rev_id}/ in
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
         response = self.api.specific_rev_content_by_rev_id(rev_id)
@@ -206,7 +206,7 @@ class APIQuerier:
             _in (bool, optional): Outbound revision IDs per token
 
         Returns:
-            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{rev_id}/ in 
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{rev_id}/ in
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
 
@@ -261,7 +261,7 @@ class APIQuerier:
             _in (bool, optional): Outbound revision IDs per token
 
         Returns:
-            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{start_rev_id}/{end_rev_id}/ in 
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{start_rev_id}/{end_rev_id}/ in
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
 
@@ -306,7 +306,7 @@ class APIQuerier:
             timestamp (bool, optional): timestamp of each revision
 
         Returns:
-            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision for GET /rev_ids/{article_title}/ and GET /rev_ids/page_id/{page_id}/ in 
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision for GET /rev_ids/{article_title}/ and GET /rev_ids/page_id/{page_id}/ in
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
         response = self.api.rev_ids_of_article(article)
@@ -328,39 +328,50 @@ class APIQuerier:
         return df
 
     def editor_content(self,
-                       editor_id: int=None,
                        page_id: int=None,
-                       start: str,
-                       end: str):
+                       editor_id: int=None,
+                       start: str=None,
+                       end: str=None) -> pd.DataFrame:
         """Get monthly editons for given editor id.
 
         Args:
-            editor_id (int): page id (int) or title (str) of the page.
-            start (bool, optional): Origin revision ID per token
-            end (bool, optional): Editor ID/Name per token
+            page_id (int, optional): page id (int).   
+            editor_id (int, optional): editor id (int).
+            start (str, optional): Origin revision ID per token
+            end (str, optional): Editor ID/Name per token
 
         Returns:
-            dict: result of the api query as documented in /editor/{editor_id}/ in 
+            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in /editor/{editor_id}/ in
                 https://www.wikiwho.net/en/api_editor/v1.0.0-beta/
         """
+        response = self.api.editor_content(page_id, editor_id, start, end)
 
-        response = self.api.editor_content(page_id, editor_id)
+        # import ipdb
+        # ipdb.set_trace()
 
-        import ipdb
-        ipdb.set_trace()  # breakpoint 5c6c47f5 //
-
-        rows = ((response["article_title"],
-                 response["page_id"],
-                 rev['timestamp'],
-                 rev['id'],
-                 rev['editor']
+        rows = ((element['year_month'],
+                 element["page_id"],
+                 element["editor_id"],
+                 element["adds"],
+                 element["adds_surv_48h"],
+                 element["adds_persistent"],
+                 element["adds_stopword_count"],
+                 element["dels"],
+                 element["dels_surv_48h"],
+                 element["dels_persistent"],
+                 element["dels_stopword_count"],
+                 element["reins"],
+                 element["reins_surv_48h"],
+                 element["reins_persistent"],
+                 element["reins_stopword_count"],
                  )
 
-                for rev in response["revisions"]
+                for element in response["editions"]
                 )
 
         df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'rev_time', 'rev_id', 'o_editor'
+            'year_month', 'page_id', 'editor_id', 'adds', 'adds_surv_48h', 'adds_persistent', 'adds_stopword_count', 'dels', 'dels_surv_48h', 'dels_persistent',
+            'dels_stopword_count', 'reins', 'reins_surv_48h', 'reins_persistent', 'reins_stopword_count'
         ])
 
         return df

@@ -243,14 +243,15 @@ class WikiWhoAPI:
         return self.request(url.lower())
 
     def editor_content(self,
-                       editor_id: int=None,
                        page_id: int=None,
-                       start: str,
-                       end: str):
+                       editor_id: int=None,
+                       start: str=None,
+                       end: str=None):
         """Get monthly editons for given editor id.
 
         Args:
-            editor_id (int): page id (int) or title (str) of the page.
+            editor_id (int): editor id (int).
+            page_id (int): page id (int).
             start (bool, optional): Origin revision ID per token
             end (bool, optional): Editor ID/Name per token
 
@@ -260,14 +261,20 @@ class WikiWhoAPI:
         """
 
         # flatten the parameters
-        params = f'start={start}&end={end}'
+        params = ''
+        if start and end:
+            params = f'start={start}&end={end}'
+        elif start:
+            params = f'start={start}'
+        elif end:
+            params = f'end={end}'
 
-        if editor_id:
+        if page_id and editor_id:
+            url = f"{self.base_editor}/page/editor/{page_id}/{editor_id}/?{params}"
+        elif editor_id:
             url = f"{self.base_editor}/editor/{editor_id}/?{params}"
         elif page_id:
             url = f"{self.base_editor}/page/{page_id}/?{params}"
-        elif page_id and editor_id:
-            url = f"{self.base_editor}/page/editor/{page_id}/{editor_id}/?{params}"
 
         # return the dictionary
         return self.request(url.lower())
