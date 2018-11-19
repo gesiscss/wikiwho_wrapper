@@ -25,21 +25,8 @@ Or you can use the querier to obtain a pandas DataFrame representation of the da
     from wikiwho_wrapper import APIQuerier
     querier = APIQuerier(api)
 
-# Run the tutorial
+# Follown the tutorial
 
-There are jupyter notebooks in the `tutorial` folder of the repository that serve as a tutorial.
-
-1. Install jupyter
-
-        pip install jupyter
-
-2. Run jupyter
-
-        jupyter notebook
-
-3. Browse `localhost:8888`
-
-4. Go to the `tutorial` directory, and follow the examples
-
+There is a tutorial in the form of jupyter notebooks, the are located in the [wikiwho_tutorial repository](https://github.com/gesiscss/wikiwho_tutorial). 
 
 ***Note that all the methods, and classes can receive parameters. All the parameters of the API are currently supported, for now you can check them directly in the code***
