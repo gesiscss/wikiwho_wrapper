@@ -8,7 +8,7 @@ from typing import Union
 from .api import WikiWhoAPI
 
 
-class APIQuerier:
+class DataView:
 
     """Qurey methods for correspondence of the WikiWhoAPI methods
 
@@ -17,7 +17,7 @@ class APIQuerier:
     """
 
     def __init__(self, api):
-        """Constructor of the APIQuerier
+        """Constructor of the DataView
 
         Args:
             api (TYPE): the WikiWhoAPI
