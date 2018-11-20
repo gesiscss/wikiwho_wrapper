@@ -75,7 +75,7 @@ class WikiWhoAPI:
         """
 
         # flatten the parameters
-        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'
+        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
 
         # create the query
         if isinstance(article, int):
@@ -84,7 +84,7 @@ class WikiWhoAPI:
             url = f"{self.base}/all_content/{article}/?{params}"
 
         # return the dictionary
-        return self.request(url.lower())
+        return self.request(url)
 
     def last_rev_content(self,
                          article: Union[int, str],
@@ -109,7 +109,7 @@ class WikiWhoAPI:
         """
 
         # flatten the parameters
-        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'
+        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
 
         # create the query
         if isinstance(article, int):
@@ -118,7 +118,7 @@ class WikiWhoAPI:
             url = f"{self.base}/rev_content/{article}/?{params}"
 
         # return the dictionary
-        return self.request(url.lower())
+        return self.request(url)
 
     def specific_rev_content_by_rev_id(self,
                                        rev_id: int,
@@ -143,12 +143,12 @@ class WikiWhoAPI:
         """
 
         # flatten the parameters
-        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'
+        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
 
         url = f"{self.base}/rev_content/rev_id/{rev_id}/?{params}"
 
         # return the dictionary
-        return self.request(url.lower())
+        return self.request(url)
 
     def specific_rev_content_by_article_title(self,
                                               article: str,
@@ -175,12 +175,12 @@ class WikiWhoAPI:
         """
 
         # flatten the parameters
-        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'
+        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
 
         url = f"{self.base}/rev_content/{article}/{rev_id}/?{params}"
 
         # return the dictionary
-        return self.request(url.lower())
+        return self.request(url)
 
     def range_rev_content_by_article_title(self,
                                            article: str,
@@ -209,12 +209,12 @@ class WikiWhoAPI:
         """
 
         # flatten the parameters
-        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'
+        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
 
         url = f"{self.base}/rev_content/{article}/{start_rev_id}/{end_rev_id}/?{params}"
 
         # return the dictionary
-        return self.request(url.lower())
+        return self.request(url)
 
     def rev_ids_of_article(self,
                            article: Union[int, str],
@@ -233,7 +233,7 @@ class WikiWhoAPI:
         """
 
         # flatten the parameters
-        params = f'editor={editor}&timestamp={timestamp}'
+        params = f'editor={editor}&timestamp={timestamp}'.lower()
 
         # create the query
         if isinstance(article, int):
@@ -242,7 +242,7 @@ class WikiWhoAPI:
             url = f"{self.base}/rev_ids/{article}/?{params}"
 
         # return the dictionary
-        return self.request(url.lower())
+        return self.request(url)
 
     def editor_content(self,
                        page_id: int=None,
@@ -279,7 +279,7 @@ class WikiWhoAPI:
             url = f"{self.base_editor}/page/{page_id}/?{params}"
 
         # return the dictionary
-        return self.request(url.lower())
+        return self.request(url)
 
     def editor_content_as_table(self,
                                 page_id: int=None,
@@ -316,7 +316,7 @@ class WikiWhoAPI:
             url = f"{self.base_editor}/as_table/page/{page_id}/?{params}"
 
         # return the dictionary
-        return self.request(url.lower())
+        return self.request(url)
 
     def request(self, url: str, tries=2) -> dict:
         """Do the request
