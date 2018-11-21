@@ -16,11 +16,11 @@ First, you need an instance of the WikiWho.
     from wikiwho_wrapper import WikiWho
     ww = WikiWhoAPI()
 
-You can either use work with the JSON (raw format from api.wikiwho.net)
+You can either use api with the JSON (raw format from api.wikiwho.net)
 
     response = ww.api.all_content("Bioglass")
 
-Or you can use the querier to obtain a pandas DataFrame representation of the data
+Or you can use the dataview to obtain a pandas DataFrame representation of the data
 
     dataView = ww.dv.all_content("Bioglass")
 
