@@ -11,19 +11,18 @@ Requires python >= 3.6
 
 # How to use it?
 
-First, you need an instance of the WikiWhoAPI. 
+First, you need an instance of the WikiWho. 
 
-    from wikiwho_wrapper import WikiWhoAPI
-    api = WikiWhoAPI()
+    from wikiwho_wrapper import WikiWho
+    ww = WikiWhoAPI()
 
 You can either use work with the JSON (raw format from api.wikiwho.net)
 
-    response = api.all_content("Bioglass")
+    response = ww.api.all_content("Bioglass")
 
 Or you can use the querier to obtain a pandas DataFrame representation of the data
 
-    from wikiwho_wrapper import APIQuerier
-    querier = APIQuerier(api)
+    dataView = ww.dv.all_content("Bioglass")
 
 # Follown the tutorial
 

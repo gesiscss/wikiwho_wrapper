@@ -327,11 +327,11 @@ class DataView:
 
         return df
 
-    def editor_content(self,
-                       page_id: int=None,
-                       editor_id: int=None,
-                       start: str=None,
-                       end: str=None) -> pd.DataFrame:
+    def editions(self,
+                 page_id: int=None,
+                 editor_id: int=None,
+                 start: str=None,
+                 end: str=None) -> pd.DataFrame:
         """Get monthly editons for given editor id.
 
         Args:
@@ -344,7 +344,7 @@ class DataView:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in /editor/{editor_id}/ in
                 https://www.wikiwho.net/en/api_editor/v1.0.0-beta/
         """
-        response = self.api.editor_content(page_id, editor_id, start, end)
+        response = self.api.editions(page_id, editor_id, start, end)
 
         rows = ((element['year_month'],
                  element["page_id"],
@@ -375,11 +375,11 @@ class DataView:
 
         return df
 
-    def editor_content_as_table(self,
-                                page_id: int=None,
-                                editor_id: int=None,
-                                start: str=None,
-                                end: str=None) -> pd.DataFrame:
+    def editions_as_table(self,
+                          page_id: int=None,
+                          editor_id: int=None,
+                          start: str=None,
+                          end: str=None) -> pd.DataFrame:
         """Get monthly editons in tabular format for given page id or editor id or both.
 
         Args:
@@ -392,7 +392,7 @@ class DataView:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in /editor/{editor_id}/ in
                 https://www.wikiwho.net/en/api_editor/v1.0.0-beta/
         """
-        response = self.api.editor_content_as_table(
+        response = self.api.editions_as_table(
             page_id, editor_id, start, end)
 
         df = pd.DataFrame(data=response['editions_data'], columns=response[

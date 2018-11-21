@@ -1,28 +1,26 @@
-from wikiwho_wrapper import WikiWhoAPI, DataView
+from wikiwho_wrapper import WikiWho
 
-api = WikiWhoAPI()
+ww = WikiWho()
 
-page = api.editor_content(page_id=2161298)
-editor = api.editor_content(editor_id=28481209)
-page_editor = api.editor_content(page_id=2161298, editor_id=286968)
+page = ww.api.editions(page_id=2161298)
+editor = ww.api.editions(editor_id=28481209)
+page_editor = ww.api.editions(page_id=2161298, editor_id=286968)
 
-page_as_table = api.editor_content_as_table(page_id=2161298)
-editor_as_table = api.editor_content_as_table(editor_id=28481209)
-page_editor_as_table = api.editor_content_as_table(
+editions_by_page_id_df = ww.dv.editions(page_id=2161298)
+editions_by_editor_id_df = ww.dv.editions(editor_id=28481209)
+editions_by_page_id_and_editor_id_df = ww.dv.editions(
     page_id=2161298, editor_id=286968)
 
-querier = DataView(api)
-
-editor_content_by_page_id_df = querier.editor_content(page_id=2161298)
-editor_content_by_editor_id_df = querier.editor_content(editor_id=28481209)
-editor_content_by_page_id_and_editor_id_df = querier.editor_content(
+page_as_table = ww.api.editions_as_table(page_id=2161298)
+editor_as_table = ww.api.editions_as_table(editor_id=28481209)
+page_editor_as_table = ww.api.editions_as_table(
     page_id=2161298, editor_id=286968)
 
-editor_content_by_page_id_as_table_df = querier.editor_content_as_table(
+editions_by_page_id_as_table_df = ww.dv.editions_as_table(
     page_id=2161298)
-editor_content_by_editor_id_as_table_df = querier.editor_content_as_table(
+editions_by_editor_id_as_table_df = ww.dv.editions_as_table(
     editor_id=28481209)
-editor_content_by_page_id_and_editor_id_as_table_df = querier.editor_content_as_table(
+editions_by_page_id_and_editor_id_as_table_df = ww.dv.editions_as_table(
     page_id=2161298, editor_id=286968)
 
 

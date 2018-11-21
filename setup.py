@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="wikiwho_wrapper",
-    version="1.2.1",
+    version="1.3.0",
     # Author details
     author="",
     author_email="wikiwho@gesis.org",
