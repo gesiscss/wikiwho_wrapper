@@ -244,11 +244,11 @@ class WikiWhoAPI:
         # return the dictionary
         return self.request(url)
 
-    def editions(self,
-                 page_id: int=None,
-                 editor_id: int=None,
-                 start: str=None,
-                 end: str=None):
+    def actions(self,
+                page_id: int=None,
+                editor_id: int=None,
+                start: str=None,
+                end: str=None):
         """Get monthly editons for given page id or editor id or both.
 
         Args:
@@ -281,11 +281,11 @@ class WikiWhoAPI:
         # return the dictionary
         return self.request(url)
 
-    def editions_as_table(self,
-                          page_id: int=None,
-                          editor_id: int=None,
-                          start: str=None,
-                          end: str=None):
+    def actions_as_table(self,
+                         page_id: int=None,
+                         editor_id: int=None,
+                         start: str=None,
+                         end: str=None):
         """Get monthly editons in tabular format for given page id or editor id or both.
 
         Args:
