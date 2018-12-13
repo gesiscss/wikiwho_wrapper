@@ -30,7 +30,7 @@ class DataView:
                     editor: bool=True,
                     token_id: bool=True,
                     out: bool=True,
-                    _in: bool=True) -> pd.DataFrame:
+                    in_: bool=True) -> pd.DataFrame:
         """Get all content on an article, i.e. Outputs all tokens that have ever existed
         in a given article, including their change history for each.
 
@@ -46,47 +46,27 @@ class DataView:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 2 - All content in
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
-        response = self.api.all_content(article)
-
-        # rows = []
-
-        # for myVal in response["all_tokens"]:
-
-        #     if not (len(myVal["out"]) == len(myVal["in"]) or
-        #             len(myVal["out"]) == len(myVal["in"]) + 1):
-        #         raise Exception("Difference lists length!")
-
-        #     for i, (_in, _out) in enumerate(zip(itertools.chain((-1,), myVal["in"]),
-        #                                         itertools.chain(myVal["out"], (-1,)))):
-        #         each_row = (
-        #             response["article_title"],
-        #             response["page_id"],
-        #             myVal["o_rev_id"],
-        #             myVal["editor"],
-        #             myVal["str"],
-        #             myVal["token_id"],
-        #             _in,
-        #             _out)
-
-        #         rows.append(each_row)
+        response = self.api.all_content(
+            article, o_rev_id, editor, token_id, out, in_)
 
         rows = ((response["article_title"],
                  response["page_id"],
-                 myVal["o_rev_id"],
-                 myVal["editor"],
+                 myVal["o_rev_id"] if o_rev_id else None,
+                 myVal["editor"] if editor else None,
                  myVal["str"],
-                 myVal["token_id"],
+                 myVal["token_id"]if token_id else None,
                  _in,
                  _out)
 
                 for myVal in response["all_tokens"]
-                for i, (_in, _out) in enumerate(zip(itertools.chain((-1,), myVal["in"]),
-                                                    itertools.chain(myVal["out"], (-1,)))))
+                for i, (_in, _out) in enumerate(itertools.zip_longest(
+                    itertools.chain((-1,), myVal["in"]) if in_ else (None,),
+                    itertools.chain(myVal["out"], (-1,)) if out else (None,)
+                )))
 
-        df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'token', 'token_id', 'in', 'out'])
-
-        return df
+        return pd.DataFrame(data=rows, columns=[
+            'article_title', 'page_id', 'o_rev_id', 'o_editor',
+            'token', 'token_id', 'in', 'out'])
 
     def last_rev_content(self,
                          article: Union[int, str],
