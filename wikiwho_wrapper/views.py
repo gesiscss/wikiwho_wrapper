@@ -30,7 +30,7 @@ class DataView:
                     editor: bool=True,
                     token_id: bool=True,
                     out: bool=True,
-                    in_: bool=True) -> pd.DataFrame:
+                    _in: bool=True) -> pd.DataFrame:
         """Get all content on an article, i.e. Outputs all tokens that have ever existed
         in a given article, including their change history for each.
 
@@ -47,22 +47,23 @@ class DataView:
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
         response = self.api.all_content(
-            article, o_rev_id, editor, token_id, out, in_)
+            article, o_rev_id, editor, token_id, out, _in)
 
         rows = ((response["article_title"],
                  response["page_id"],
                  myVal["o_rev_id"] if o_rev_id else None,
                  myVal["editor"] if editor else None,
                  myVal["str"],
-                 myVal["token_id"]if token_id else None,
-                 _in,
-                 _out)
+                 myVal["token_id"] if token_id else None,
+                 _i,
+                 _o)
 
                 for myVal in response["all_tokens"]
-                for i, (_in, _out) in enumerate(itertools.zip_longest(
-                    itertools.chain((-1,), myVal["in"]) if in_ else (None,),
+                for i, (_i, _o) in enumerate(itertools.zip_longest(
+                    itertools.chain((-1,), myVal["in"]) if _in else (None,),
                     itertools.chain(myVal["out"], (-1,)) if out else (None,)
-                )))
+                ))
+                )
 
         return pd.DataFrame(data=rows, columns=[
             'article_title', 'page_id', 'o_rev_id', 'o_editor',
@@ -89,30 +90,40 @@ class DataView:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision for GET /rev_content/{article_title}/ and GET /rev_content/page_id/{page_id}/ in
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
-        response = self.api.last_rev_content(article)
 
+        # 1. forward the parameters
+        response = self.api.last_rev_content(article, o_rev_id, editor, token_id, out, _in)
+
+        # 2. fill values with None when parameter if false
         rows = ((response["article_title"],
                  response["page_id"],
-                 token_dict["o_rev_id"],
-                 token_dict["editor"],
+                 token_dict["o_rev_id"] if o_rev_id else None,
+                 token_dict["editor"] if editor else None,
                  rev_id,
-                 rev_dict['editor'],
+                 rev_dict['editor'] if editor else None,
                  rev_dict['time'],
                  token_dict["str"],
-                 token_dict["token_id"],
-                 #_in,
-                 #_out
-                 )
+                 token_dict["token_id"] if token_id else None,
+                 # 3.uncomment
+                 _i,
+                 _o)
 
                 for dummy_rev in response["revisions"]
                 for rev_id, rev_dict in dummy_rev.items()
                 for token_dict in rev_dict['tokens']
+                # 4. replace this:
                 # for i, (_in, _out) in enumerate(zip(itertools.chain((-1,), token_dict["in"]),
                 # itertools.chain(token_dict["out"], (-1,))))
+
+                # with this:
+                for i, (_i, _o) in enumerate(itertools.zip_longest(
+                    itertools.chain((-1,), token_dict["in"]) if _in else (None,),
+                    itertools.chain(token_dict["out"], (-1,)) if out else (None,)
+                ))
                 )
 
         df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 'rev_editor', 'rev_time', 'token', 'token_id',  # 'in', 'out'
+            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 'rev_editor', 'rev_time', 'token', 'token_id', '_in', 'out'
         ])
 
         return df
