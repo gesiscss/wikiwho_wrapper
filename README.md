@@ -33,4 +33,4 @@ Or you can use the dataview to obtain a pandas DataFrame representation of the d
 
 There is a tutorial in the form of jupyter notebooks, the are located in the [wikiwho_tutorial repository](https://github.com/gesiscss/wikiwho_tutorial). 
 
-***Note that all the methods, and classes can receive parameters. All the parameters of the API are currently supported, for now you can check them directly in the code***
+***Note that all the methods, and classes can receive parameters. All the parameters of the API are currently supported. Ror now, you can check them directly in the code.***
