@@ -48,7 +48,7 @@ class WikiWhoAPI:
             self.session.params['api_key'] = WIKIWHO_API_KEY
 
         self.base = f"{protocol}://{domain}/{lng}/api/{version}"
-        self.base_editor = f"{protocol}://{domain}/{lng}/api_editor/{version}"
+        self.base_editor = f"{protocol}://{domain}/{lng}/edit_persistence/{version}"
         self.attempts = attempts
 
     def all_content(self,
@@ -259,7 +259,7 @@ class WikiWhoAPI:
 
         Returns:
             dict: result of the api query as documented in /editor/{editor_id}/ in 
-                https://www.wikiwho.net/en/api_editor/v1.0.0-beta/
+                https://www.wikiwho.net/en/edit_persistence/v1.0.0-beta/
         """
 
         # flatten the parameters
@@ -296,7 +296,7 @@ class WikiWhoAPI:
 
         Returns:
             dict: result of the api query as documented in /editor/{editor_id}/ in 
-                https://www.wikiwho.net/en/api_editor/v1.0.0-beta/
+                https://www.wikiwho.net/en/edit_persistence/v1.0.0-beta/
         """
 
         # flatten the parameters

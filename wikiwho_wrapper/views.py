@@ -322,7 +322,7 @@ class DataView:
 
         Returns:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in /editor/{editor_id}/ in
-                https://www.wikiwho.net/en/api_editor/v1.0.0-beta/
+                https://www.wikiwho.net/en/edit_persistence/v1.0.0-beta/
         """
         response = self.api.actions(page_id, editor_id, start, end)
 
@@ -370,7 +370,7 @@ class DataView:
 
         Returns:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in /editor/{editor_id}/ in
-                https://www.wikiwho.net/en/api_editor/v1.0.0-beta/
+                https://www.wikiwho.net/en/edit_persistence/v1.0.0-beta/
         """
         response = self.api.actions_as_table(
             page_id, editor_id, start, end)
