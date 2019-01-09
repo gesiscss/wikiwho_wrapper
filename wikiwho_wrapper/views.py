@@ -337,7 +337,7 @@ class DataView:
 
     @deprecation.deprecated(deprecated_in="1.5", removed_in="1.6",
                         current_version=__version__,
-                        details="Use the edit_persistence function instead")
+                        details="Use the edit_persistence function instead.")
     def actions(self,
                 page_id: int=None,
                 editor_id: int=None,
@@ -389,7 +389,7 @@ class DataView:
 
     @deprecation.deprecated(deprecated_in="1.5", removed_in="1.6",
                         current_version=__version__,
-                        details="Use the edit_persistence_as_table function instead")
+                        details="Use the edit_persistence_as_table function instead.")
     def actions_as_table(self,
                          page_id: int=None,
                          editor_id: int=None,
