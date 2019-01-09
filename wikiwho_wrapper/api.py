@@ -4,7 +4,9 @@ from typing import Union
 
 import os
 import requests
+import deprecation
 
+from . import __version__
 
 class WikiWhoAPI:
 
@@ -244,6 +246,8 @@ class WikiWhoAPI:
         # return the dictionary
         return self.request(url)
 
+    @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
+                        details="Use the edit_persistence function instead")
     def actions(self,
                 page_id: int=None,
                 editor_id: int=None,
@@ -281,7 +285,84 @@ class WikiWhoAPI:
         # return the dictionary
         return self.request(url)
 
+    @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
+                        current_version=__version__,
+                        details="Use the edit_persistence_as_table function instead")
     def actions_as_table(self,
+                         page_id: int=None,
+                         editor_id: int=None,
+                         start: str=None,
+                         end: str=None):
+        """Get monthly editons in tabular format for given page id or editor id or both.
+
+        Args:
+            page_id (int, optional): page id (int).
+            editor_id (int, optional): editor id (int).
+            start (str, optional): Origin revision ID per token
+            end (str, optional): Editor ID/Name per token
+
+        Returns:
+            dict: result of the api query as documented in /editor/{editor_id}/ in 
+                https://www.wikiwho.net/en/edit_persistence/v1.0.0-beta/
+        """
+
+        # flatten the parameters
+        params = ''
+        if start and end:
+            params = f'start={start}&end={end}'
+        elif start:
+            params = f'start={start}'
+        elif end:
+            params = f'end={end}'
+
+        if page_id and editor_id:
+            url = f"{self.base_editor}/as_table/page/editor/{page_id}/{editor_id}/?{params}"
+        elif editor_id:
+            url = f"{self.base_editor}/as_table/editor/{editor_id}/?{params}"
+        elif page_id:
+            url = f"{self.base_editor}/as_table/page/{page_id}/?{params}"
+
+        # return the dictionary
+        return self.request(url)
+
+    def edit_persistence(self,
+                page_id: int=None,
+                editor_id: int=None,
+                start: str=None,
+                end: str=None):
+        """Get monthly editons for given page id or editor id or both.
+
+        Args:
+            page_id (int, optional): page id (int).
+            editor_id (int, optional): editor id (int).
+            start (str, optional): Origin revision ID per token
+            end (str, optional): Editor ID/Name per token
+
+        Returns:
+            dict: result of the api query as documented in /editor/{editor_id}/ in 
+                https://www.wikiwho.net/en/edit_persistence/v1.0.0-beta/
+        """
+
+        # flatten the parameters
+        params = ''
+        if start and end:
+            params = f'start={start}&end={end}'
+        elif start:
+            params = f'start={start}'
+        elif end:
+            params = f'end={end}'
+
+        if page_id and editor_id:
+            url = f"{self.base_editor}/page/editor/{page_id}/{editor_id}/?{params}"
+        elif editor_id:
+            url = f"{self.base_editor}/editor/{editor_id}/?{params}"
+        elif page_id:
+            url = f"{self.base_editor}/page/{page_id}/?{params}"
+
+        # return the dictionary
+        return self.request(url)
+
+    def edit_persistence_as_table(self,
                          page_id: int=None,
                          editor_id: int=None,
                          start: str=None,
