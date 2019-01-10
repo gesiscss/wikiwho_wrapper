@@ -86,9 +86,14 @@ class DataView:
                 for i, (_i, _o) in self.__get_iterator(token_dict, _in, out)
                 )
 
-        return pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor',
-            'token', 'token_id', 'in', 'out'])
+        df = pd.DataFrame(data=rows, columns=[
+            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'token', 'token_id', 'in', 'out'
+        ])
+
+        return df.drop(columns=[name for name, include in zip(
+            ['o_rev_id', 'o_editor', 'token_id', 'in', 'out'],
+            [o_rev_id, editor, token_id, _in, out]) if not include
+        ])
 
     def last_rev_content(self,
                          article: Union[int, str],
@@ -134,10 +139,14 @@ class DataView:
                 )
 
         df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 'rev_editor', 'rev_time', 'token', 'token_id', '_in', 'out'
+            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 
+            'rev_editor', 'rev_time', 'token', 'token_id', 'in', 'out'
         ])
 
-        return df
+        return df.drop(columns=[name for name, include in zip(
+            ['o_rev_id', 'o_editor', 'rev_editor', 'token_id', 'in', 'out'],
+            [o_rev_id, editor, editor, token_id, _in, out]) if not include
+        ])
 
     def specific_rev_content_by_rev_id(self,
                                        rev_id: int,
@@ -183,10 +192,14 @@ class DataView:
                 )
 
         df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 'rev_editor', 'rev_time', 'token', 'token_id',  'in', 'out'
+            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 
+            'rev_editor', 'rev_time', 'token', 'token_id', 'in', 'out'
         ])
 
-        return df
+        return df.drop(columns=[name for name, include in zip(
+            ['o_rev_id', 'o_editor', 'rev_editor', 'token_id', 'in', 'out'],
+            [o_rev_id, editor, editor, token_id, _in, out]) if not include
+        ])
 
     def specific_rev_content_by_article_title(self,
                                               article: str,
@@ -235,10 +248,14 @@ class DataView:
                 )
 
         df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 'rev_editor', 'rev_time', 'token', 'token_id',  'in', 'out'
+            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 
+            'rev_editor', 'rev_time', 'token', 'token_id', 'in', 'out'
         ])
 
-        return df
+        return df.drop(columns=[name for name, include in zip(
+            ['o_rev_id', 'o_editor', 'rev_editor', 'token_id', 'in', 'out'],
+            [o_rev_id, editor, editor, token_id, _in, out]) if not include
+        ])
 
     def range_rev_content_by_article_title(self,
                                            article: str,
@@ -289,10 +306,14 @@ class DataView:
                 )
 
         df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 'rev_editor', 'rev_time', 'token', 'token_id', 'in', 'out'
+            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 
+            'rev_editor', 'rev_time', 'token', 'token_id', 'in', 'out'
         ])
 
-        return df
+        return df.drop(columns=[name for name, include in zip(
+            ['o_rev_id', 'o_editor', 'rev_editor', 'token_id', 'in', 'out'],
+            [o_rev_id, editor, editor, token_id, _in, out]) if not include
+        ])
 
     def rev_ids_of_article(self,
                            article: Union[int, str],
@@ -313,7 +334,7 @@ class DataView:
 
         rows = ((response["article_title"],
                  response["page_id"],
-                 rev['timestamp'],
+                 rev['timestamp'] if timestamp else None,
                  rev['id'],
                  rev['editor'] if editor else None
                  )
@@ -325,7 +346,10 @@ class DataView:
             'article_title', 'page_id', 'rev_time', 'rev_id', 'o_editor'
         ])
 
-        return df
+        return df.drop(columns=[name for name, include in zip(
+            ['rev_time', 'o_editor'],
+            [timestamp, editor]) if not include
+        ])
 
     @deprecation.deprecated(deprecated_in="1.5", removed_in="1.6",
                             current_version=__version__,
