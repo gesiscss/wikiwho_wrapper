@@ -94,8 +94,8 @@ class WikiWhoAPI:
                          o_rev_id: bool=True,
                          editor: bool=True,
                          token_id: bool=True,
-                         out: bool=False,
-                         _in: bool=False):
+                         out: bool=True,
+                         _in: bool=True):
         """Get the content of the most recent (last) revision of the given article, as available on Wikipedia.
 
         Args:
@@ -129,8 +129,8 @@ class WikiWhoAPI:
                                        o_rev_id: bool=True,
                                        editor: bool=True,
                                        token_id: bool=True,
-                                       out: bool=False,
-                                       _in: bool=False):
+                                       out: bool=True,
+                                       _in: bool=True):
         """Get the content of the given revision id.
 
         Args:
@@ -167,8 +167,8 @@ class WikiWhoAPI:
                                               o_rev_id: bool=True,
                                               editor: bool=True,
                                               token_id: bool=True,
-                                              out: bool=False,
-                                              _in: bool=False):
+                                              out: bool=True,
+                                              _in: bool=True):
         """Get the content of the given revision of the given article title.
 
         Args:
@@ -200,8 +200,8 @@ class WikiWhoAPI:
                                            o_rev_id: bool=True,
                                            editor: bool=True,
                                            token_id: bool=True,
-                                           out: bool=False,
-                                           _in: bool=False):
+                                           out: bool=True,
+                                           _in: bool=True):
         """Get the content of a range of revisions of an article, by given article title, start revison id and end revison id.
 
         Args:

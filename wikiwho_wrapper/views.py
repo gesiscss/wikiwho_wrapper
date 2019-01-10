@@ -100,8 +100,8 @@ class DataView:
                          o_rev_id: bool=True,
                          editor: bool=True,
                          token_id: bool=True,
-                         out: bool=True,
-                         _in: bool=True) -> pd.DataFrame:
+                         out: bool=False,
+                         _in: bool=False) -> pd.DataFrame:
         """Get the content of the most recent (last) revision of the given article, as available on Wikipedia.
 
         Args:
@@ -154,8 +154,8 @@ class DataView:
                                        o_rev_id: bool=True,
                                        editor: bool=True,
                                        token_id: bool=True,
-                                       out: bool=True,
-                                       _in: bool=True) -> pd.DataFrame:
+                                       out: bool=False,
+                                       _in: bool=False) -> pd.DataFrame:
         """Get the content of the given revision id.
 
         Args:
@@ -212,8 +212,8 @@ class DataView:
                                               o_rev_id: bool=True,
                                               editor: bool=True,
                                               token_id: bool=True,
-                                              out: bool=True,
-                                              _in: bool=True) -> pd.DataFrame:
+                                              out: bool=False,
+                                              _in: bool=False) -> pd.DataFrame:
         """Get the content of the given revision of the given article title.
 
         Args:
@@ -269,8 +269,8 @@ class DataView:
                                            o_rev_id: bool=True,
                                            editor: bool=True,
                                            token_id: bool=True,
-                                           out: bool=True,
-                                           _in: bool=True) -> pd.DataFrame:
+                                           out: bool=False,
+                                           _in: bool=False) -> pd.DataFrame:
         """Get the content of a range of revisions of an article, by given article title, start revison id and end revison id.
 
         Args:
