@@ -8,6 +8,7 @@ import deprecation
 
 from . import __version__
 
+
 class WikiWhoAPI:
 
     """The APIs provide provenance and change information about the tokens a Wikipedia article consists of, for several languages. Apart from the source language edition they draw from, their specifications and usage are identical
@@ -124,6 +125,7 @@ class WikiWhoAPI:
 
     def specific_rev_content_by_rev_id(self,
                                        rev_id: int,
+                                       article_title=None,
                                        o_rev_id: bool=True,
                                        editor: bool=True,
                                        token_id: bool=True,
@@ -133,6 +135,7 @@ class WikiWhoAPI:
 
         Args:
             rev_id (int): Revision ID to get content for.
+            article_title (None, optional): the title of the article of the revision
             o_rev_id (bool, optional): Origin revision ID per token
             editor (bool, optional): Editor ID/Name per token
             token_id (bool, optional): Token ID per token
@@ -147,11 +150,17 @@ class WikiWhoAPI:
         # flatten the parameters
         params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
 
-        url = f"{self.base}/rev_content/rev_id/{rev_id}/?{params}"
+        if article_title is None:
+            url = f"{self.base}/rev_content/rev_id/{rev_id}/?{params}"
+        else:
+            url = f"{self.base}/rev_content/{article_title}/{rev_id}/?{params}"
 
         # return the dictionary
         return self.request(url)
 
+    @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
+                            current_version=__version__,
+                            details=("Use the specific_rev_content_by_rev_id function with the article_title parameter instead."))
     def specific_rev_content_by_article_title(self,
                                               article: str,
                                               rev_id: int,
@@ -247,7 +256,7 @@ class WikiWhoAPI:
         return self.request(url)
 
     @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
-                        details="Use the edit_persistence function instead.")
+                            details="Use the edit_persistence function instead.")
     def actions(self,
                 page_id: int=None,
                 editor_id: int=None,
@@ -286,8 +295,8 @@ class WikiWhoAPI:
         return self.request(url)
 
     @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
-                        current_version=__version__,
-                        details="Use the edit_persistence_as_table function instead.")
+                            current_version=__version__,
+                            details="Use the edit_persistence_as_table function instead.")
     def actions_as_table(self,
                          page_id: int=None,
                          editor_id: int=None,
@@ -326,10 +335,10 @@ class WikiWhoAPI:
         return self.request(url)
 
     def edit_persistence(self,
-                page_id: int=None,
-                editor_id: int=None,
-                start: str=None,
-                end: str=None):
+                         page_id: int=None,
+                         editor_id: int=None,
+                         start: str=None,
+                         end: str=None):
         """Get monthly editons for given page id or editor id or both.
 
         Args:
@@ -363,10 +372,10 @@ class WikiWhoAPI:
         return self.request(url)
 
     def edit_persistence_as_table(self,
-                         page_id: int=None,
-                         editor_id: int=None,
-                         start: str=None,
-                         end: str=None):
+                                  page_id: int=None,
+                                  editor_id: int=None,
+                                  start: str=None,
+                                  end: str=None):
         """Get monthly editons in tabular format for given page id or editor id or both.
 
         Args:

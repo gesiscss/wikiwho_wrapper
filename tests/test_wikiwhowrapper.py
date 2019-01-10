@@ -78,18 +78,18 @@ def test_wikiwho_specific_rev_content_by_id(rev_content_keys):
         response.keys()), "All keys should be in the response"
 
 
-def test_wikiwho_specific_rev_content_by_title(rev_content_keys):
-    """Tests an API call to get the content of the given revision of the given article by title"""
+# def test_wikiwho_specific_rev_content_by_title(rev_content_keys):
+#     """Tests an API call to get the content of the given revision of the given article by title"""
 
-    api = WikiWhoAPI()
-    response = api.specific_rev_content_by_article_title("Cologne", 503680497)
+#     api = WikiWhoAPI()
+#     response = api.specific_rev_content_by_article_title("Cologne", 503680497)
 
-    assert isinstance(response, dict)
-    assert response['page_id'] == 6187, "The ID should be in the response"
-    assert '503680497' in response['revisions'][
-        0], "The ID should be in the response"
-    assert set(rev_content_keys).issubset(
-        response.keys()), "All keys should be in the response"
+#     assert isinstance(response, dict)
+#     assert response['page_id'] == 6187, "The ID should be in the response"
+#     assert '503680497' in response['revisions'][
+#         0], "The ID should be in the response"
+#     assert set(rev_content_keys).issubset(
+#         response.keys()), "All keys should be in the response"
 
 
 def test_wikiwho_range_rev_content_by_article_title(rev_content_keys):

@@ -150,6 +150,7 @@ class DataView:
 
     def specific_rev_content_by_rev_id(self,
                                        rev_id: int,
+                                       article_title=None,
                                        o_rev_id: bool=True,
                                        editor: bool=True,
                                        token_id: bool=True,
@@ -159,6 +160,7 @@ class DataView:
 
         Args:
             rev_id (int): Revision ID to get content for.
+            article_title (None, optional): the title of the article of the revision
             o_rev_id (bool, optional): Origin revision ID per token
             editor (bool, optional): Editor ID/Name per token
             token_id (bool, optional): Token ID per token
@@ -170,7 +172,7 @@ class DataView:
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
         response = self.api.specific_rev_content_by_rev_id(
-            rev_id, o_rev_id, editor, token_id, out, _in)
+            rev_id, article_title, o_rev_id, editor, token_id, out, _in)
 
         rows = ((response["article_title"],
                  response["page_id"],
@@ -201,6 +203,9 @@ class DataView:
             [o_rev_id, editor, editor, token_id, _in, out]) if not include
         ])
 
+    @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
+                            current_version=__version__,
+                            details=("Use the specific_rev_content_by_rev_id function with the article_title parameter instead."))
     def specific_rev_content_by_article_title(self,
                                               article: str,
                                               rev_id: int,
