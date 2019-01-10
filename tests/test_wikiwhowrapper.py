@@ -116,7 +116,7 @@ def test_wikiwho_article_rev_id_by_page_id(rev_content_keys):
 
     assert isinstance(response, dict)
     assert response['page_id'] == 2161298, "The ID should be in the response"
-    assert len(response['revisions']) == 175
+    assert len(response['revisions']) >= 176
     assert set(rev_content_keys).issubset(
         response.keys()), "All keys should be in the response"
 

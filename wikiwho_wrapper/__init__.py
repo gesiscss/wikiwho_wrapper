@@ -1,6 +1,9 @@
 import pkg_resources
 name = "wikiwho_wrapper"
-__version__ = pkg_resources.require(name)[0].version
+try:
+	__version__ = pkg_resources.require(name)[0].version
+except:
+	__version__ = None
 
 
 from .api import WikiWhoAPI

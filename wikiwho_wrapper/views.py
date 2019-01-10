@@ -26,6 +26,28 @@ class DataView:
         """
         self.api = api
 
+    def __get_iterator(self, token_dict, _in, out):
+        if _in and out:
+            return enumerate(zip(
+                itertools.chain((-1,), token_dict["in"]) if _in else (None,),
+                itertools.chain(token_dict["out"], (-1,)) if out else (None,)
+            ))
+        elif _in:
+            return enumerate(itertools.zip_longest(
+                itertools.chain((-1,), token_dict["in"]) if _in else (None,),
+                itertools.chain(token_dict["out"], (-1,)) if out else (None,)
+            ))
+        elif out:
+            return enumerate(itertools.zip_longest(
+                itertools.chain((-1,), token_dict["in"]) if _in else (None,),
+                itertools.chain(token_dict["out"]) if out else (None,)
+            ))
+        else:
+            return enumerate(itertools.zip_longest(
+                itertools.chain((-1,), token_dict["in"]) if _in else (None,),
+                itertools.chain(token_dict["out"], (-1,)) if out else (None,)
+            ))
+
     def all_content(self,
                     article: Union[int, str],
                     o_rev_id: bool=True,
@@ -53,18 +75,15 @@ class DataView:
 
         rows = ((response["article_title"],
                  response["page_id"],
-                 myVal["o_rev_id"] if o_rev_id else None,
-                 myVal["editor"] if editor else None,
-                 myVal["str"],
-                 myVal["token_id"] if token_id else None,
+                 token_dict["o_rev_id"] if o_rev_id else None,
+                 token_dict["editor"] if editor else None,
+                 token_dict["str"],
+                 token_dict["token_id"] if token_id else None,
                  _i,
                  _o)
 
-                for myVal in response["all_tokens"]
-                for i, (_i, _o) in enumerate(itertools.zip_longest(
-                    itertools.chain((-1,), myVal["in"]) if _in else (None,),
-                    itertools.chain(myVal["out"], (-1,)) if out else (None,)
-                ))
+                for token_dict in response["all_tokens"]
+                for i, (_i, _o) in self.__get_iterator(token_dict, _in, out)
                 )
 
         return pd.DataFrame(data=rows, columns=[
@@ -93,10 +112,9 @@ class DataView:
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
 
-        # 1. forward the parameters
-        response = self.api.last_rev_content(article, o_rev_id, editor, token_id, out, _in)
+        response = self.api.last_rev_content(
+            article, o_rev_id, editor, token_id, out, _in)
 
-        # 2. fill values with None when parameter if false
         rows = ((response["article_title"],
                  response["page_id"],
                  token_dict["o_rev_id"] if o_rev_id else None,
@@ -106,22 +124,13 @@ class DataView:
                  rev_dict['time'],
                  token_dict["str"],
                  token_dict["token_id"] if token_id else None,
-                 # 3.uncomment
                  _i,
                  _o)
 
                 for dummy_rev in response["revisions"]
                 for rev_id, rev_dict in dummy_rev.items()
                 for token_dict in rev_dict['tokens']
-                # 4. replace this:
-                # for i, (_in, _out) in enumerate(zip(itertools.chain((-1,), token_dict["in"]),
-                # itertools.chain(token_dict["out"], (-1,))))
-
-                # with this:
-                for i, (_i, _o) in enumerate(itertools.zip_longest(
-                    itertools.chain((-1,), token_dict["in"]) if _in else (None,),
-                    itertools.chain(token_dict["out"], (-1,)) if out else (None,)
-                ))
+                for i, (_i, _o) in self.__get_iterator(token_dict, _in, out)
                 )
 
         df = pd.DataFrame(data=rows, columns=[
@@ -151,7 +160,8 @@ class DataView:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/rev_id/{rev_id}/ in
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
-        response = self.api.specific_rev_content_by_rev_id(rev_id, o_rev_id, editor, token_id, out, _in)
+        response = self.api.specific_rev_content_by_rev_id(
+            rev_id, o_rev_id, editor, token_id, out, _in)
 
         rows = ((response["article_title"],
                  response["page_id"],
@@ -164,19 +174,12 @@ class DataView:
                  token_dict["token_id"] if token_id else None,
                  _i,
                  _o
-                 #_in,
-                 #_out
                  )
 
                 for dummy_rev in response["revisions"]
                 for rev_id, rev_dict in dummy_rev.items()
                 for token_dict in rev_dict['tokens']
-                # for i, (_in, _out) in enumerate(zip(itertools.chain((-1,), token_dict["in"]),
-                # itertools.chain(token_dict["out"], (-1,))))
-                for i, (_i, _o) in enumerate(itertools.zip_longest(
-                    itertools.chain((-1,), token_dict["in"]) if _in else (None,),
-                    itertools.chain(token_dict["out"], (-1,)) if out else (None,)
-                ))
+                for i, (_i, _o) in self.__get_iterator(token_dict, _in, out)
                 )
 
         df = pd.DataFrame(data=rows, columns=[
@@ -210,7 +213,7 @@ class DataView:
         """
 
         response = self.api.specific_rev_content_by_article_title(
-            article, rev_id, o_rev_id, editor, token_id,out, _in)
+            article, rev_id, o_rev_id, editor, token_id, out, _in)
 
         rows = ((response["article_title"],
                  response["page_id"],
@@ -228,12 +231,7 @@ class DataView:
                 for dummy_rev in response["revisions"]
                 for _, rev_dict in dummy_rev.items()
                 for token_dict in rev_dict['tokens']
-                # for i, (_in, _out) in enumerate(zip(itertools.chain((-1,), token_dict["in"]),
-                # itertools.chain(token_dict["out"], (-1,))))
-                for i, (_i, _o) in enumerate(itertools.zip_longest(
-                    itertools.chain((-1,), token_dict["in"]) if _in else (None,),
-                    itertools.chain(token_dict["out"], (-1,)) if out else (None,)
-                ))
+                for i, (_i, _o) in self.__get_iterator(token_dict, _in, out)
                 )
 
         df = pd.DataFrame(data=rows, columns=[
@@ -287,12 +285,7 @@ class DataView:
                 for dummy_rev in response["revisions"]
                 for rev_id, rev_dict in dummy_rev.items()
                 for token_dict in rev_dict['tokens']
-                # for i, (_in, _out) in enumerate(zip(itertools.chain((-1,), token_dict["in"]),
-                # itertools.chain(token_dict["out"], (-1,))))
-                for i, (_i, _o) in enumerate(itertools.zip_longest(
-                    itertools.chain((-1,), token_dict["in"]) if _in else (None,),
-                    itertools.chain(token_dict["out"], (-1,)) if out else (None,)
-                ))
+                for i, (_i, _o) in self.__get_iterator(token_dict, _in, out)
                 )
 
         df = pd.DataFrame(data=rows, columns=[
@@ -334,10 +327,9 @@ class DataView:
 
         return df
 
-
     @deprecation.deprecated(deprecated_in="1.5", removed_in="1.6",
-                        current_version=__version__,
-                        details="Use the edit_persistence function instead.")
+                            current_version=__version__,
+                            details="Use the edit_persistence function instead.")
     def actions(self,
                 page_id: int=None,
                 editor_id: int=None,
@@ -386,10 +378,9 @@ class DataView:
 
         return df
 
-
     @deprecation.deprecated(deprecated_in="1.5", removed_in="1.6",
-                        current_version=__version__,
-                        details="Use the edit_persistence_as_table function instead.")
+                            current_version=__version__,
+                            details="Use the edit_persistence_as_table function instead.")
     def actions_as_table(self,
                          page_id: int=None,
                          editor_id: int=None,
@@ -415,12 +406,11 @@ class DataView:
 
         return df
 
-
     def edit_persistence(self,
-                page_id: int=None,
-                editor_id: int=None,
-                start: str=None,
-                end: str=None) -> pd.DataFrame:
+                         page_id: int=None,
+                         editor_id: int=None,
+                         start: str=None,
+                         end: str=None) -> pd.DataFrame:
         """Get monthly editons for given editor id.
 
         Args:
@@ -465,10 +455,10 @@ class DataView:
         return df
 
     def edit_persistence_as_table(self,
-                         page_id: int=None,
-                         editor_id: int=None,
-                         start: str=None,
-                         end: str=None) -> pd.DataFrame:
+                                  page_id: int=None,
+                                  editor_id: int=None,
+                                  start: str=None,
+                                  end: str=None) -> pd.DataFrame:
         """Get monthly editons in tabular format for given page id or editor id or both.
 
         Args:
