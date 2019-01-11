@@ -409,7 +409,7 @@ class DataView:
 
     @deprecation.deprecated(deprecated_in="1.5", removed_in="1.6",
                             current_version=__version__,
-                            details="Use the edit_persistence_as_table function instead.")
+                            details="Use the edit_persistence function instead.")
     def actions_as_table(self,
                          page_id: int=None,
                          editor_id: int=None,
@@ -436,59 +436,11 @@ class DataView:
         return df
 
     def edit_persistence(self,
-                         page_id: int=None,
-                         editor_id: int=None,
-                         start: str=None,
-                         end: str=None) -> pd.DataFrame:
-        """Get monthly editons for given editor id.
-
-        Args:
-            page_id (int, optional): page id (int).   
-            editor_id (int, optional): editor id (int).
-            start (str, optional): Origin revision ID per token
-            end (str, optional): Editor ID/Name per token
-
-        Returns:
-            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in /editor/{editor_id}/ in
-                https://www.wikiwho.net/en/edit_persistence/v1.0.0-beta/
-        """
-        response = self.api.edit_persistence(page_id, editor_id, start, end)
-
-        rows = ((element['year_month'],
-                 element["page_id"],
-                 element["editor_id"],
-                 element["adds"],
-                 element["adds_surv_48h"],
-                 element["adds_persistent"],
-                 element["adds_stopword_count"],
-                 element["dels"],
-                 element["dels_surv_48h"],
-                 element["dels_persistent"],
-                 element["dels_stopword_count"],
-                 element["reins"],
-                 element["reins_surv_48h"],
-                 element["reins_persistent"],
-                 element["reins_stopword_count"],
-                 )
-
-                for element in response["editions"]
-                )
-
-        df = pd.DataFrame(data=rows, columns=[
-            'year_month', 'page_id', 'editor_id',
-            'adds', 'adds_surv_48h', 'adds_persistent', 'adds_stopword_count',
-            'dels', 'dels_surv_48h', 'dels_persistent', 'dels_stopword_count',
-            'reins', 'reins_surv_48h', 'reins_persistent', 'reins_stopword_count'
-        ])
-
-        return df
-
-    def edit_persistence_as_table(self,
                                   page_id: int=None,
                                   editor_id: int=None,
                                   start: str=None,
                                   end: str=None) -> pd.DataFrame:
-        """Get monthly editons in tabular format for given page id or editor id or both.
+        """Get monthly editons for given editor id.
 
         Args:
             page_id (int, optional): page id (int).   
