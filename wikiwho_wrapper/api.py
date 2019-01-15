@@ -2,6 +2,8 @@
 """
 from typing import Union
 
+import numpy as np
+
 import os
 import requests
 import deprecation
@@ -81,7 +83,7 @@ class WikiWhoAPI:
         params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
 
         # create the query
-        if isinstance(article, int):
+        if isinstance(article, (int, np.integer)):
             url = f"{self.base}/all_content/page_id/{article}/?{params}"
         else:
             url = f"{self.base}/all_content/{article}/?{params}"
@@ -115,7 +117,7 @@ class WikiWhoAPI:
         params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
 
         # create the query
-        if isinstance(article, int):
+        if isinstance(article, (int, np.integer)):
             url = f"{self.base}/rev_content/page_id/{article}/?{params}"
         else:
             url = f"{self.base}/rev_content/{article}/?{params}"
@@ -247,7 +249,7 @@ class WikiWhoAPI:
         params = f'editor={editor}&timestamp={timestamp}'.lower()
 
         # create the query
-        if isinstance(article, int):
+        if isinstance(article, (int, np.integer)):
             url = f"{self.base}/rev_ids/page_id/{article}/?{params}"
         else:
             url = f"{self.base}/rev_ids/{article}/?{params}"
