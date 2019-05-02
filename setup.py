@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="wikiwho_wrapper",
-    version="1.5.0",
+    version="1.6.0",
     # Author details
     author="",
     author_email="wikiwho@gesis.org",
@@ -31,5 +31,5 @@ setuptools.setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['requests', 'pandas', 'deprecation']
+    install_requires=['requests', 'pandas', 'deprecation', 'wikiwho_pickle']
 )
