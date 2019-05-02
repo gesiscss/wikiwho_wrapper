@@ -1,6 +1,7 @@
 """Summary
 """
 from .api import WikiWhoAPI
+from .pickle_api import WikiWhoPickleAPI
 from .views import DataView
 
 
@@ -23,7 +24,8 @@ class WikiWho:
                  protocol: str="https",
                  domain: str="api.wikiwho.net",
                  version: str="v1.0.0-beta",
-                 attempts: int=2):
+                 attempts: int=2,
+                 pickle_path: str=None):
         """Constructor of the WikiWho
 
         Args:
@@ -37,13 +39,17 @@ class WikiWho:
             attempts (int, optional): the number of attempts before giving up trying to connect
         """
 
-        self.api = WikiWhoAPI(wikiwho_api_username,
-                              wikiwho_api_password,
-                              wikiwho_api_key,
-                              lng,
-                              protocol,
-                              domain,
-                              version,
-                              attempts)
+        if pickle_path:
+            self.api = WikiWhoPickleAPI(pickle_path, lng)
+
+        else:
+            self.api = WikiWhoAPI(wikiwho_api_username,
+                                  wikiwho_api_password,
+                                  wikiwho_api_key,
+                                  lng,
+                                  protocol,
+                                  domain,
+                                  version,
+                                  attempts)
 
         self.dv = DataView(self.api)
