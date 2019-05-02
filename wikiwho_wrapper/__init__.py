@@ -7,5 +7,6 @@ except:
 
 
 from .api import WikiWhoAPI
+from .pickle_api import WikiWhoPickleAPI
 from .views import DataView
 from .wikiwho import WikiWho
