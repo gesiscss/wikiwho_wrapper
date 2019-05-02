@@ -139,7 +139,7 @@ class DataView:
                 )
 
         df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 
+            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id',
             'rev_editor', 'rev_time', 'token', 'token_id', 'in', 'out'
         ])
 
@@ -150,7 +150,8 @@ class DataView:
 
     def specific_rev_content_by_rev_id(self,
                                        rev_id: int,
-                                       article_title=None,
+                                       article_title: str=None,
+                                       article_id: int=None,
                                        o_rev_id: bool=True,
                                        editor: bool=True,
                                        token_id: bool=True,
@@ -172,7 +173,10 @@ class DataView:
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
         response = self.api.specific_rev_content_by_rev_id(
-            rev_id, article_title, o_rev_id, editor, token_id, out, _in)
+            rev_id, article_title, article_id, o_rev_id, editor, token_id, out, _in)
+
+        if 'Error' in response:
+            raise ValueError(response['Error'])
 
         rows = ((response["article_title"],
                  response["page_id"],
@@ -194,7 +198,7 @@ class DataView:
                 )
 
         df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 
+            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id',
             'rev_editor', 'rev_time', 'token', 'token_id', 'in', 'out'
         ])
 
@@ -202,6 +206,7 @@ class DataView:
             ['o_rev_id', 'o_editor', 'rev_editor', 'token_id', 'in', 'out'],
             [o_rev_id, editor, editor, token_id, _in, out]) if not include
         ])
+        
 
     @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
                             current_version=__version__,
@@ -253,7 +258,7 @@ class DataView:
                 )
 
         df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 
+            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id',
             'rev_editor', 'rev_time', 'token', 'token_id', 'in', 'out'
         ])
 
@@ -311,7 +316,7 @@ class DataView:
                 )
 
         df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id', 
+            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id',
             'rev_editor', 'rev_time', 'token', 'token_id', 'in', 'out'
         ])
 
@@ -436,10 +441,10 @@ class DataView:
         return df
 
     def edit_persistence(self,
-                                  page_id: int=None,
-                                  editor_id: int=None,
-                                  start: str=None,
-                                  end: str=None) -> pd.DataFrame:
+                         page_id: int=None,
+                         editor_id: int=None,
+                         start: str=None,
+                         end: str=None) -> pd.DataFrame:
         """Get monthly editons for given editor id.
 
         Args:

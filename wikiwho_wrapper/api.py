@@ -127,7 +127,8 @@ class WikiWhoAPI:
 
     def specific_rev_content_by_rev_id(self,
                                        rev_id: int,
-                                       article_title=None,
+                                       article_title: str =None,
+                                       article_id: int = None,
                                        o_rev_id: bool=True,
                                        editor: bool=True,
                                        token_id: bool=True,
@@ -148,6 +149,11 @@ class WikiWhoAPI:
             dict: result of the api query as documented in 1 - Content per revision  for GET /rev_content/rev_id/{rev_id}/ in 
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
+
+        if article_id is not None and article_title is None:
+            raise NotImplementedError("When the article is accessed through the web API, " 
+                "you must provide the article_title. The article_id parameter is ignored.")
+
 
         # flatten the parameters
         params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
