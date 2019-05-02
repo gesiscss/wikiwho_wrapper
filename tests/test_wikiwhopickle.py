@@ -34,7 +34,7 @@ def test_wikiwhopickle_specific_rev_content_by_id():
     df = ww.dv.specific_rev_content_by_rev_id(363901244)
 
     ww_pickle = WikiWho(pickle_path='pickles', lng='en')
-    df_pickle = ww_pickle.dv.specific_rev_content_by_rev_id(363901244, article_id=2161298)
+    df_pickle = ww_pickle.dv.specific_rev_content_by_rev_id(363901244, 2161298)
 
     df_pickle['rev_id'] = df_pickle['rev_id'].astype(str)
 

@@ -6,8 +6,8 @@ ww = WikiWho()
 
 if os.path.isfile(os.path.join('pickles', 'en', '2161298.p')):
     ww_pickle = WikiWho(pickle_path='pickles', lng='en')
-    df_pickle = ww_pickle.dv.specific_rev_content_by_rev_id(363901244, article_id=2161298)
-    page = ww_pickle.api.all_content(article=2161298)
+    df_pickle = ww_pickle.dv.specific_rev_content_by_rev_id(363901244, 2161298)
+    page = ww_pickle.api.all_content(2161298)
     last_rev_content_pickle = ww_pickle.dv.last_rev_content(2161298)
 
 # Examples using the api directly

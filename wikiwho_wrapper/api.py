@@ -127,8 +127,7 @@ class WikiWhoAPI:
 
     def specific_rev_content_by_rev_id(self,
                                        rev_id: int,
-                                       article_title: str =None,
-                                       article_id: int = None,
+                                       article: Union[int, str]=None,
                                        o_rev_id: bool=True,
                                        editor: bool=True,
                                        token_id: bool=True,
@@ -138,7 +137,7 @@ class WikiWhoAPI:
 
         Args:
             rev_id (int): Revision ID to get content for.
-            article_title (None, optional): the title of the article of the revision
+            article (Union[int, str]): page title (str) of the page (page id (int) is not supported by the API).
             o_rev_id (bool, optional): Origin revision ID per token
             editor (bool, optional): Editor ID/Name per token
             token_id (bool, optional): Token ID per token
@@ -150,59 +149,25 @@ class WikiWhoAPI:
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
 
-        if article_id is not None and article_title is None:
-            raise NotImplementedError("When the article is accessed through the web API, " 
-                "you must provide the article_title. The article_id parameter is ignored.")
+        # create the query
+        if isinstance(article, (int, np.integer)):
+            raise NotImplementedError("When the article is accessed through the web API, you must "
+                                      "provide the article title in the article parameter of type str, article id (int) "
+                                      "is ignored.")
+        else:
+            # flatten the parameters
+            params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
 
-
-        # flatten the parameters
-        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
-
-        if article_title is None:
+        if article is None:
             url = f"{self.base}/rev_content/rev_id/{rev_id}/?{params}"
         else:
-            url = f"{self.base}/rev_content/{article_title}/{rev_id}/?{params}"
-
-        # return the dictionary
-        return self.request(url)
-
-    @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
-                            current_version=__version__,
-                            details=("Use the specific_rev_content_by_rev_id function with the article_title parameter instead."))
-    def specific_rev_content_by_article_title(self,
-                                              article: str,
-                                              rev_id: int,
-                                              o_rev_id: bool=True,
-                                              editor: bool=True,
-                                              token_id: bool=True,
-                                              out: bool=True,
-                                              _in: bool=True):
-        """Get the content of the given revision of the given article title.
-
-        Args:
-            article (str): Title (str) of the page.
-            rev_id (int): Revision ID to get content for.
-            o_rev_id (bool, optional): Origin revision ID per token
-            editor (bool, optional): Editor ID/Name per token
-            token_id (bool, optional): Token ID per token
-            out (bool, optional): Outbound revision IDs per token
-            _in (bool, optional): Outbound revision IDs per token
-
-        Returns:
-            dict: result of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{rev_id}/ in 
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
-        """
-
-        # flatten the parameters
-        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
-
-        url = f"{self.base}/rev_content/{article}/{rev_id}/?{params}"
+            url = f"{self.base}/rev_content/{article}/{rev_id}/?{params}"
 
         # return the dictionary
         return self.request(url)
 
     def range_rev_content_by_article_title(self,
-                                           article: str,
+                                           article: Union[int, str],
                                            start_rev_id: int,
                                            end_rev_id: int,
                                            o_rev_id: bool=True,
@@ -227,8 +192,14 @@ class WikiWhoAPI:
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
 
-        # flatten the parameters
-        params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
+        # create the query
+        if isinstance(article, (int, np.integer)):
+            raise NotImplementedError("When the article is accessed through the web API, you must "
+                                      "provide the article title in the article parameter of type str, article id (int) "
+                                      "is ignored.")
+        else:
+            # flatten the parameters
+            params = f'o_rev_id={o_rev_id}&editor={editor}&token_id={token_id}&out={out}&in={_in}'.lower()
 
         url = f"{self.base}/rev_content/{article}/{start_rev_id}/{end_rev_id}/?{params}"
 

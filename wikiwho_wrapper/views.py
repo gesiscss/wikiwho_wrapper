@@ -150,8 +150,7 @@ class DataView:
 
     def specific_rev_content_by_rev_id(self,
                                        rev_id: int,
-                                       article_title: str=None,
-                                       article_id: int=None,
+                                       article: Union[int, str]=None,
                                        o_rev_id: bool=True,
                                        editor: bool=True,
                                        token_id: bool=True,
@@ -161,7 +160,7 @@ class DataView:
 
         Args:
             rev_id (int): Revision ID to get content for.
-            article_title (None, optional): the title of the article of the revision
+            article (Union[int, str]): page id (int) or title (str) of the page.
             o_rev_id (bool, optional): Origin revision ID per token
             editor (bool, optional): Editor ID/Name per token
             token_id (bool, optional): Token ID per token
@@ -173,7 +172,7 @@ class DataView:
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
         response = self.api.specific_rev_content_by_rev_id(
-            rev_id, article_title, article_id, o_rev_id, editor, token_id, out, _in)
+            rev_id, article, o_rev_id, editor, token_id, out, _in)
 
         if 'Error' in response:
             raise ValueError(response['Error'])
@@ -208,67 +207,8 @@ class DataView:
         ])
         
 
-    @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
-                            current_version=__version__,
-                            details=("Use the specific_rev_content_by_rev_id function with the article_title parameter instead."))
-    def specific_rev_content_by_article_title(self,
-                                              article: str,
-                                              rev_id: int,
-                                              o_rev_id: bool=True,
-                                              editor: bool=True,
-                                              token_id: bool=True,
-                                              out: bool=False,
-                                              _in: bool=False) -> pd.DataFrame:
-        """Get the content of the given revision of the given article title.
-
-        Args:
-            article (str): Title (str) of the page.
-            rev_id (int): Revision ID to get content for.
-            o_rev_id (bool, optional): Origin revision ID per token
-            editor (bool, optional): Editor ID/Name per token
-            token_id (bool, optional): Token ID per token
-            out (bool, optional): Outbound revision IDs per token
-            _in (bool, optional): Outbound revision IDs per token
-
-        Returns:
-            pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{rev_id}/ in
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
-        """
-
-        response = self.api.specific_rev_content_by_article_title(
-            article, rev_id, o_rev_id, editor, token_id, out, _in)
-
-        rows = ((response["article_title"],
-                 response["page_id"],
-                 token_dict["o_rev_id"] if o_rev_id else None,
-                 token_dict["editor"] if editor else None,
-                 rev_id,
-                 rev_dict['editor'] if editor else None,
-                 rev_dict['time'],
-                 token_dict["str"],
-                 token_dict["token_id"] if token_id else None,
-                 _i,
-                 _o
-                 )
-
-                for dummy_rev in response["revisions"]
-                for _, rev_dict in dummy_rev.items()
-                for token_dict in rev_dict['tokens']
-                for i, (_i, _o) in self.__get_iterator(token_dict, _in, out)
-                )
-
-        df = pd.DataFrame(data=rows, columns=[
-            'article_title', 'page_id', 'o_rev_id', 'o_editor', 'rev_id',
-            'rev_editor', 'rev_time', 'token', 'token_id', 'in', 'out'
-        ])
-
-        return df.drop(columns=[name for name, include in zip(
-            ['o_rev_id', 'o_editor', 'rev_editor', 'token_id', 'in', 'out'],
-            [o_rev_id, editor, editor, token_id, _in, out]) if not include
-        ])
-
     def range_rev_content_by_article_title(self,
-                                           article: str,
+                                           article: Union[int, str],
                                            start_rev_id: int,
                                            end_rev_id: int,
                                            o_rev_id: bool=True,
@@ -279,7 +219,7 @@ class DataView:
         """Get the content of a range of revisions of an article, by given article title, start revison id and end revison id.
 
         Args:
-            article (str): Title (str) of the page.
+            article (Union[int, str]): page id (int) or title (str) of the page.
             start_rev_id (int): Start revision ID
             end_rev_id (int): End revision ID
             o_rev_id (bool, optional): Origin revision ID per token

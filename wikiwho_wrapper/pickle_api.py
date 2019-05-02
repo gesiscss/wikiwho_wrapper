@@ -41,7 +41,8 @@ class WikiWhoPickleAPI(WikiWhoAPI):
         in a given article, including their change history for each.
 
         Args:
-            article (Union[int, str]): page id (int) or title (str) of the page.
+            article (Union[int, str]): filename of the page without extension, usually the 
+                page id (int) or title (str) of the page.
             o_rev_id (bool, optional): Origin revision ID per token
             editor (bool, optional): Editor ID/Name per token
             token_id (bool, optional): Token ID per token
@@ -83,7 +84,8 @@ class WikiWhoPickleAPI(WikiWhoAPI):
         """Get the content of the most recent (last) revision of the given article, as available on Wikipedia.
 
         Args:
-            article (Union[int, str]): page id (int) or title (str) of the page.
+            article (Union[int, str]): filename of the page without extension, usually the 
+                page id (int) or title (str) of the page.
             o_rev_id (bool, optional): Origin revision ID per token
             editor (bool, optional): Editor ID/Name per token
             token_id (bool, optional): Token ID per token
@@ -117,8 +119,7 @@ class WikiWhoPickleAPI(WikiWhoAPI):
 
     def specific_rev_content_by_rev_id(self,
                                        rev_id: int,
-                                       article_title: str=None,
-                                       article_id: int=None,
+                                       article: Union[int, str],
                                        o_rev_id: bool=True,
                                        editor: bool=True,
                                        token_id: bool=True,
@@ -128,7 +129,8 @@ class WikiWhoPickleAPI(WikiWhoAPI):
 
         Args:
             rev_id (int): Revision ID to get content for.
-            article_title (None, optional): the title of the article of the revision
+            article (Union[int, str]): filename of the page without extension, usually the 
+                page id (int) or title (str) of the page.
             o_rev_id (bool, optional): Origin revision ID per token
             editor (bool, optional): Editor ID/Name per token
             token_id (bool, optional): Token ID per token
@@ -140,60 +142,9 @@ class WikiWhoPickleAPI(WikiWhoAPI):
                 https://api.wikiwho.net/en/api/v1.0.0-beta/
         """
 
-        if article_id is None:
-            raise NotImplementedError("When the article is accessed through the pickle, " 
-                "you must provide the article_id. The article_title parameter is ignored.")
-
-        if self.current != article_id:
-            self.ww = open_pickle(
-                article_id, pickle_path=self.pickle_path, lang=self.lng)
-            self.current = article_id
-
-        # flatten the parameters
-        params = []
-        if o_rev_id:
-            params.append('o_rev_id')
-        if editor:
-            params.append('editor')
-        if token_id:
-            params.append('token_id')
-        if out:
-            params.append('out')
-        if _in:
-            params.append('in')
-
-        # return the dictionary
-        return self.ww.get_revision_content([rev_id], params)
-
-    @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
-                            current_version=__version__,
-                            details=("Use the specific_rev_content_by_rev_id function with the article_title parameter instead."))
-    def specific_rev_content_by_article_title(self,
-                                              article: str,
-                                              rev_id: int,
-                                              o_rev_id: bool=True,
-                                              editor: bool=True,
-                                              token_id: bool=True,
-                                              out: bool=True,
-                                              _in: bool=True):
-        """Get the content of the given revision of the given article title.
-
-        Args:
-            article (str): Title (str) of the page.
-            rev_id (int): Revision ID to get content for.
-            o_rev_id (bool, optional): Origin revision ID per token
-            editor (bool, optional): Editor ID/Name per token
-            token_id (bool, optional): Token ID per token
-            out (bool, optional): Outbound revision IDs per token
-            _in (bool, optional): Outbound revision IDs per token
-
-        Returns:
-            dict: result of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{rev_id}/ in
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
-        """
-
         if self.current != article:
-            self.ww = open_pickle(article, pickle_path=self.pickle_path, lang=self.lng)
+            self.ww = open_pickle(
+                article, pickle_path=self.pickle_path, lang=self.lng)
             self.current = article
 
         # flatten the parameters
@@ -212,6 +163,7 @@ class WikiWhoPickleAPI(WikiWhoAPI):
         # return the dictionary
         return self.ww.get_revision_content([rev_id], params)
 
+
     def range_rev_content_by_article_title(self,
                                            article: str,
                                            start_rev_id: int,
@@ -224,7 +176,8 @@ class WikiWhoPickleAPI(WikiWhoAPI):
         """Get the content of a range of revisions of an article, by given article title, start revison id and end revison id.
 
         Args:
-            article (str): Title (str) of the page.
+            article (Union[int, str]): filename of the page without extension, usually the 
+                page id (int) or title (str) of the page.
             start_rev_id (int): Start revision ID
             end_rev_id (int): End revision ID
             o_rev_id (bool, optional): Origin revision ID per token
@@ -265,7 +218,8 @@ class WikiWhoPickleAPI(WikiWhoAPI):
         """Get revision IDs of an article by given article title or page id.
 
         Args:
-            article (Union[int, str]): page id (int) or title (str) of the page.
+            article (Union[int, str]): filename of the page without extension, usually the 
+                page id (int) or title (str) of the page.
             editor (bool, optional): Editor ID/Name per token
             timestamp (bool, optional): timestamp of each revision
 
@@ -287,53 +241,6 @@ class WikiWhoPickleAPI(WikiWhoAPI):
 
         # return the dictionary
         return self.ww.get_revision_ids(params)
-
-    @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
-                            details="Use the edit_persistence function instead.")
-    def actions(self,
-                page_id: int=None,
-                editor_id: int=None,
-                start: str=None,
-                end: str=None):
-        """Get monthly editons for given page id or editor id or both.
-
-        Args:
-            page_id (int, optional): page id (int).
-            editor_id (int, optional): editor id (int).
-            start (str, optional): Origin revision ID per token
-            end (str, optional): Editor ID/Name per token
-
-        Returns:
-            dict: result of the api query as documented in /editor/{editor_id}/ in
-                https://www.wikiwho.net/en/edit_persistence/v1.0.0-beta/
-        """
-
-        raise NotImplementedError("actions() cannot be access through the pickle file. You "
-                                  "should use the WikiWhoAPI instead.")
-
-    @deprecation.deprecated(deprecated_in="1.4", removed_in="1.6",
-                            current_version=__version__,
-                            details="Use the edit_persistence_as_table function instead.")
-    def actions_as_table(self,
-                         page_id: int=None,
-                         editor_id: int=None,
-                         start: str=None,
-                         end: str=None):
-        """Get monthly editons in tabular format for given page id or editor id or both.
-
-        Args:
-            page_id (int, optional): page id (int).
-            editor_id (int, optional): editor id (int).
-            start (str, optional): Origin revision ID per token
-            end (str, optional): Editor ID/Name per token
-
-        Returns:
-            dict: result of the api query as documented in /editor/{editor_id}/ in 
-                https://www.wikiwho.net/en/edit_persistence/v1.0.0-beta/
-        """
-
-        raise NotImplementedError("actions_as_table cannot be access through the pickle file. You "
-                                  "should use the WikiWhoAPI instead.")
 
     def edit_persistence(self,
                          page_id: int=None,
