@@ -17,7 +17,7 @@ Requires python >= 3.6
 First, you need an instance of the WikiWho. 
 
     from wikiwho_wrapper import WikiWho
-    ww = WikiWhoAPI() # or WikiWhoAPI(USERNAME, PASSWORD)
+    ww = WikiWho() # or WikiWho(USERNAME, PASSWORD)
 
 You can either use api with the JSON (raw format from api.wikiwho.net)
 
@@ -27,8 +27,12 @@ Or you can use the dataview to obtain a pandas DataFrame representation of the d
 
     dataView = ww.dv.all_content("Bioglass")
 
+***Note that all the methods, and classes can receive parameters. All the parameters of the API are currently supported. For now, you can check them directly in the [code](https://github.com/gesiscss/wikiwho_wrapper).***
+
 # Tutorial
 
-There is a tutorial in the form of jupyter notebooks, the are located in the [wikiwho_tutorial repository](https://github.com/gesiscss/wikiwho_tutorial). 
+[![Binder](https://notebooks.gesis.org/binder/badge_logo.svg)](https://notebooks.gesis.org/binder/v2/gh/gesiscss/wikiwho_tutorial/master?filepath=1.%20API%20requests%20(WikiWho%20wrapper).ipynb)
 
-***Note that all the methods, and classes can receive parameters. All the parameters of the API are currently supported. For now, you can check them directly in the code.***
+The Github repository of the tutorial is available [here](https://github.com/gesiscss/wikiwho_tutorial). 
+
+
