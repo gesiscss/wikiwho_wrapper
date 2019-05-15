@@ -17,7 +17,7 @@ Requires python >= 3.6
 First, you need an instance of the WikiWho. 
 
     from wikiwho_wrapper import WikiWho
-    ww = WikiWhoAPI()
+    ww = WikiWhoAPI() # or WikiWhoAPI(USERNAME, PASSWORD)
 
 You can either use api with the JSON (raw format from api.wikiwho.net)
 

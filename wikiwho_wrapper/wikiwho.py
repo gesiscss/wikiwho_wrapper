@@ -17,9 +17,9 @@ class WikiWho:
     """
 
     def __init__(self,
-                 wikiwho_api_username: str=None,
-                 wikiwho_api_password: str=None,
-                 wikiwho_api_key: str=None,
+                 username: str=None,
+                 password: str=None,
+                 api_key: str=None,
                  lng: str="en",
                  protocol: str="https",
                  domain: str="api.wikiwho.net",
@@ -29,9 +29,9 @@ class WikiWho:
         """Constructor of the WikiWho
 
         Args:
-            wikiwho_api_username (str, optional): WikiWho API username
-            wikiwho_api_password (str, optional): WikiWho API password
-            wikiwho_api_key (str, optional): WikiWho API key
+            username (str, optional): WikiWho API username
+            password (str, optional): WikiWho API password
+            api_key (str, optional): WikiWho API key
             lng (str, optional): the language that needs to be query
             protocol (str, optional): the protocol of the url
             domain (str, optional): the domain that hosts the api
@@ -43,9 +43,11 @@ class WikiWho:
             self.api = WikiWhoPickleAPI(pickle_path, lng)
 
         else:
-            self.api = WikiWhoAPI(wikiwho_api_username,
-                                  wikiwho_api_password,
-                                  wikiwho_api_key,
+
+
+            self.api = WikiWhoAPI(username,
+                                  password,
+                                  api_key,
                                   lng,
                                   protocol,
                                   domain,
