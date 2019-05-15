@@ -23,9 +23,9 @@ class WikiWhoAPI:
     """
 
     def __init__(self,
-                 wikiwho_api_username: str=None,
-                 wikiwho_api_password: str=None,
-                 wikiwho_api_key: str=None,
+                 username: str=None,
+                 password: str=None,
+                 api_key: str=None,
                  lng: str="en",
                  protocol: str="https",
                  domain: str="api.wikiwho.net",
@@ -34,9 +34,9 @@ class WikiWhoAPI:
         """Constructor of the WikiWhoAPI
 
         Args:
-            wikiwho_api_username (str, optional): WikiWho API username
-            wikiwho_api_password (str, optional): WikiWho API password
-            wikiwho_api_key (str, optional): WikiWho API key
+            username (str, optional): WikiWho API username
+            password (str, optional): WikiWho API password
+            api_key (str, optional): WikiWho API key
             lng (str, optional): the language that needs to be query
             protocol (str, optional): the protocol of the url
             domain (str, optional): the domain that hosts the api
@@ -45,12 +45,12 @@ class WikiWhoAPI:
         """
 
         self.session = requests.Session()
-        if wikiwho_api_username and wikiwho_api_password:
-            self.session.auth = (wikiwho_api_username, wikiwho_api_password)
+        if username and password:
+            self.session.auth = (username, password)
 
-        if wikiwho_api_key:
+        if api_key:
             self.session.params = {}
-            self.session.params['api_key'] = WIKIWHO_API_KEY
+            self.session.params['api_key'] = api_key
 
         self.base = f"{protocol}://{domain}/{lng}/api/{version}"
         self.base_editor = f"{protocol}://{domain}/{lng}/edit_persistence/{version}"
