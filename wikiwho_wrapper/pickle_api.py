@@ -4,7 +4,11 @@ from typing import Union
 import numpy as np
 import deprecation
 
-from wikiwho import open_pickle
+from os.path import join
+import pickle
+def open_pickle(article_id, pickle_path='pickles', lang=''):
+    with open(join(pickle_path, lang, f'{article_id}.p'), 'rb') as _f:
+        return pickle.load(_f)
 
 from . import __version__
 from .api import WikiWhoAPI
