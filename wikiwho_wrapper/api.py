@@ -28,7 +28,7 @@ class WikiWhoAPI:
                  api_key: str=None,
                  lng: str="en",
                  protocol: str="https",
-                 domain: str="api.wikiwho.net",
+                 domain: str="wikiwho-api.wmcloud.org",
                  version: str="v1.0.0-beta",
                  attempts: int=2):
         """Constructor of the WikiWhoAPI
@@ -76,7 +76,7 @@ class WikiWhoAPI:
 
         Returns:
             dict: result of the api query as documented in 2 - All content in 
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
+                https://wikiwho-api.wmcloud.org/en/api/v1.0.0-beta/
         """
 
         # flatten the parameters
@@ -110,7 +110,7 @@ class WikiWhoAPI:
 
         Returns:
             dict: result of the api query as documented in 1 - Content per revision for GET /rev_content/{article_title}/ and GET /rev_content/page_id/{page_id}/ in 
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
+                https://wikiwho-api.wmcloud.org/en/api/v1.0.0-beta/
         """
 
         # flatten the parameters
@@ -146,7 +146,7 @@ class WikiWhoAPI:
 
         Returns:
             dict: result of the api query as documented in 1 - Content per revision  for GET /rev_content/rev_id/{rev_id}/ in 
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
+                https://wikiwho-api.wmcloud.org/en/api/v1.0.0-beta/
         """
 
         # create the query
@@ -189,7 +189,7 @@ class WikiWhoAPI:
 
         Returns:
             dict: result of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{start_rev_id}/{end_rev_id}/ in 
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
+                https://wikiwho-api.wmcloud.org/en/api/v1.0.0-beta/
         """
 
         # create the query
@@ -219,7 +219,7 @@ class WikiWhoAPI:
 
         Returns:
             dict: result of the api query as documented in 1 - Content per revision for GET /rev_ids/{article_title}/ and GET /rev_ids/page_id/{page_id}/ in 
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
+                https://wikiwho-api.wmcloud.org/en/api/v1.0.0-beta/
         """
 
         # flatten the parameters

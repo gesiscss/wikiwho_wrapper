@@ -22,7 +22,7 @@ class WikiWho:
                  api_key: str=None,
                  lng: str="en",
                  protocol: str="https",
-                 domain: str="api.wikiwho.net",
+                 domain: str="wikiwho-api.wmcloud.org",
                  version: str="v1.0.0-beta",
                  attempts: int=2,
                  pickle_path: str=None):
