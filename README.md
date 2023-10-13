@@ -1,10 +1,10 @@
 # wikiwho_wrapper
 
-A light/simple Python wrapper for the [WikiWho API](https://api.wikiwho.net/).
+A light/simple Python wrapper for the [WikiWho API](https://wikiwho-api.wmcloud.org/).
 
-The [WikiWho API](https://api.wikiwho.net/) provides the first editor (author) of Wikipedia words (tokens). It also provides the history of each of the tokens, i.e. in which revisions (and which editors) was the token (re)inserted or removed. The API is based on the [WikiWho algorithm](https://github.com/wikiwho) (~95% acc.). 
+The [WikiWho API](https://wikiwho-api.wmcloud.org/) provides the first editor (author) of Wikipedia words (tokens). It also provides the history of each of the tokens, i.e. in which revisions (and which editors) was the token (re)inserted or removed. The API is based on the [WikiWho algorithm](https://github.com/wikiwho) (~95% acc.). 
 
-Find full information and how to cite this work in [api.wikiwho.net](https://api.wikiwho.net/).
+Find full information and how to cite this work in [wikiwho-api.wmcloud.org](https://wikiwho-api.wmcloud.org/).
 
 # Installation
 
@@ -19,7 +19,7 @@ First, you need an instance of the WikiWho.
     from wikiwho_wrapper import WikiWho
     ww = WikiWho() # or WikiWho(USERNAME, PASSWORD)
 
-You can either use api with the JSON (raw format from api.wikiwho.net)
+You can either use api with the JSON (raw format from wikiwho-api.wmcloud.org)
 
     response = ww.api.all_content("Bioglass")
 

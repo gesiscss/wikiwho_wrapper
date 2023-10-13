@@ -68,7 +68,7 @@ class DataView:
 
         Returns:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 2 - All content in
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
+                https://wikiwho-api.wmcloud.org/en/api/v1.0.0-beta/
         """
         response = self.api.all_content(
             article, o_rev_id, editor, token_id, out, _in)
@@ -114,7 +114,7 @@ class DataView:
 
         Returns:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision for GET /rev_content/{article_title}/ and GET /rev_content/page_id/{page_id}/ in
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
+                https://wikiwho-api.wmcloud.org/en/api/v1.0.0-beta/
         """
 
         response = self.api.last_rev_content(
@@ -169,7 +169,7 @@ class DataView:
 
         Returns:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/rev_id/{rev_id}/ in
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
+                https://wikiwho-api.wmcloud.org/en/api/v1.0.0-beta/
         """
         response = self.api.specific_rev_content_by_rev_id(
             rev_id, article, o_rev_id, editor, token_id, out, _in)
@@ -230,7 +230,7 @@ class DataView:
 
         Returns:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision  for GET /rev_content/{article_title}/{start_rev_id}/{end_rev_id}/ in
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
+                https://wikiwho-api.wmcloud.org/en/api/v1.0.0-beta/
         """
 
         response = self.api.range_rev_content_by_article_title(
@@ -278,7 +278,7 @@ class DataView:
 
         Returns:
             pd.DataFrame: Return a Pandas DataFrame of the api query as documented in 1 - Content per revision for GET /rev_ids/{article_title}/ and GET /rev_ids/page_id/{page_id}/ in
-                https://api.wikiwho.net/en/api/v1.0.0-beta/
+                https://wikiwho-api.wmcloud.org/en/api/v1.0.0-beta/
         """
         response = self.api.rev_ids_of_article(article, editor, timestamp)
 
